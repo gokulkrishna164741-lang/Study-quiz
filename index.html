@@ -1,182 +1,182 @@
-<p>&lt;!DOCTYPE html&gt;</p>
-<p>&lt;html lang="en"&gt;</p>
-<p>&lt;head&gt;</p>
-<p>&lt;meta charset="UTF-8"&gt;</p>
-<p>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p>&lt;title&gt;Study Quiz | Heart Histology &amp; Time Management&lt;/title&gt;</p>
-<p>&lt;style&gt;</p>
-<p>:root{--bg:#f3f6fb;--card:#fff;--text:#172033;--muted:#65718a;--primary:#3157d5;--line:#e2e8f0;--good:#16834b;--bad:#c73535}</p>
-<p>*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}</p>
-<p>header{background:linear-gradient(120deg,#172554,#3157d5);color:#fff;padding:26px 16px;text-align:center}</p>
-<p>header h1{margin:0 0 8px;font-size:clamp(22px,4vw,32px)}header p{margin:0;color:#dce5ff}</p>
-<p>main{max-width:900px;margin:24px auto;padding:0 14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 8px 24px #1725540a}</p>
-<p>label{display:block;font-weight:700;margin:12px 0 6px}input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font-size:16px;background:white;color:var(--text)}</p>
-<p>button{border:0;border-radius:9px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer;background:var(--primary);color:white}</p>
-<p>button.secondary{background:#e8edff;color:#203a9b}button:disabled{opacity:.4;cursor:not-allowed}</p>
-<p>.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}</p>
-<p>.progress{height:9px;background:#e8edf5;border-radius:99px;overflow:hidden;margin:12px 0 18px}.bar{height:100%;width:0;background:var(--primary);transition:width .2s}</p>
-<p>.meta{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px}.question{font-size:20px;line-height:1.45;font-weight:700;margin:16px 0}</p>
-<p>.option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:13px;margin:9px 0;cursor:pointer}</p>
-<p>.option:hover{border-color:var(--primary);background:#f7f8ff}.option input{width:auto;margin-top:3px;accent-color:var(--primary)}</p>
-<p>.badge{display:inline-block;border-radius:30px;padding:5px 10px;font-size:12px;font-weight:700;background:#edf1ff;color:#304bb3}</p>
-<p>.hidden{display:none!important}.score{font-size:42px;font-weight:800;color:var(--primary)}.review-item{border-top:1px solid var(--line);padding:16px 0}.correct{color:var(--good);font-weight:700}.incorrect{color:var(--bad);font-weight:700}.explain{color:var(--muted);margin-top:8px;line-height:1.5}</p>
-<p>footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}</p>
-<p>@media(max-width:600px){.row{grid-template-columns:1fr}.card{padding:17px}.question{font-size:18px}.meta{font-size:12px}}</p>
-<p>&lt;/style&gt;</p>
-<p>&lt;/head&gt;</p>
-<p>&lt;body&gt;</p>
-<p>&lt;header&gt;&lt;h1&gt;Interactive Study Quiz&lt;/h1&gt;&lt;p&gt;Heart Histology • Time and Task Management&lt;/p&gt;&lt;/header&gt;</p>
-<p>&lt;main&gt;</p>
-<p>&lt;section id="setup" class="card"&gt;</p>
-<p>&lt;h2&gt;Start your examination&lt;/h2&gt;</p>
-<p>&lt;label for="student"&gt;Your name (optional)&lt;/label&gt;&lt;input id="student" placeholder="Enter your name"&gt;</p>
-<p>&lt;div class="row"&gt;</p>
-<p>&lt;div&gt;&lt;label for="subject"&gt;Choose subject&lt;/label&gt;&lt;select id="subject"&gt;</p>
-<p>&lt;option value="heart"&gt;Heart Histology&lt;/option&gt;&lt;option value="time"&gt;Time Management (all six PDFs)&lt;/option&gt;&lt;option value="mixed"&gt;Mixed Quiz – Both Subjects&lt;/option&gt;</p>
-<p>&lt;/select&gt;&lt;/div&gt;</p>
-<p>&lt;div&gt;&lt;label for="difficulty"&gt;Difficulty mode&lt;/label&gt;&lt;select id="difficulty"&gt;</p>
-<p>&lt;option value="easy"&gt;Easy – 30 minutes&lt;/option&gt;&lt;option value="medium" selected&gt;Medium – 25 minutes&lt;/option&gt;&lt;option value="hard"&gt;Hard – 20 minutes&lt;/option&gt;&lt;option value="practice"&gt;Practice – no timer&lt;/option&gt;</p>
-<p>&lt;/select&gt;&lt;/div&gt;</p>
-<p>&lt;/div&gt;</p>
-<p>&lt;p class="explain"&gt;Each exam contains 25 questions. Questions and answer choices are shuffled. Select an answer for each question, move back and forth, and submit when finished.&lt;/p&gt;</p>
-<p>&lt;button id="startBtn"&gt;Start quiz&lt;/button&gt;</p>
-<p>&lt;/section&gt;</p>
-&nbsp;
-<p>&lt;section id="quiz" class="card hidden"&gt;</p>
-<p>&lt;div class="meta"&gt;&lt;span id="counter"&gt;Question 1 of 25&lt;/span&gt;&lt;span id="timer"&gt;25:00&lt;/span&gt;&lt;/div&gt;</p>
-<p>&lt;div class="progress"&gt;&lt;div id="progressBar" class="bar"&gt;&lt;/div&gt;&lt;/div&gt;</p>
-<p>&lt;div&gt;&lt;span id="level" class="badge"&gt;MEDIUM&lt;/span&gt;&lt;/div&gt;</p>
-<p>&lt;div id="questionText" class="question"&gt;&lt;/div&gt;</p>
-<p>&lt;div id="options"&gt;&lt;/div&gt;</p>
-<p>&lt;div class="actions"&gt;</p>
-<p>&lt;button class="secondary" id="prevBtn"&gt;Previous&lt;/button&gt;&lt;button class="secondary" id="nextBtn"&gt;Next&lt;/button&gt;</p>
-<p>&lt;button class="secondary" id="reviewBtn"&gt;Mark for review&lt;/button&gt;&lt;button id="submitBtn"&gt;Submit exam&lt;/button&gt;</p>
-<p>&lt;/div&gt;</p>
-<p>&lt;p class="explain" id="markedText"&gt;&lt;/p&gt;</p>
-<p>&lt;/section&gt;</p>
-&nbsp;
-<p>&lt;section id="result" class="card hidden"&gt;</p>
-<p>&lt;h2&gt;Examination result&lt;/h2&gt;&lt;p id="greeting"&gt;&lt;/p&gt;&lt;div class="score" id="score"&gt;&lt;/div&gt;</p>
-<p>&lt;p id="performance"&gt;&lt;/p&gt;&lt;p id="summary"&gt;&lt;/p&gt;</p>
-<p>&lt;div class="actions"&gt;&lt;button id="reviewAllBtn"&gt;Review all answers&lt;/button&gt;&lt;button class="secondary" id="wrongBtn"&gt;Review incorrect only&lt;/button&gt;&lt;button class="secondary" id="retakeBtn"&gt;Retake quiz&lt;/button&gt;&lt;button class="secondary" id="printBtn"&gt;Print / Save PDF&lt;/button&gt;&lt;/div&gt;</p>
-<p>&lt;/section&gt;</p>
-<p>&lt;section id="review" class="card hidden"&gt;&lt;h2&gt;Answer review&lt;/h2&gt;&lt;div id="reviewList"&gt;&lt;/div&gt;&lt;button class="secondary" id="backResultBtn"&gt;Back to result&lt;/button&gt;&lt;/section&gt;</p>
-<p>&lt;/main&gt;</p>
-<p>&lt;footer&gt;Study tool generated from the seven PDFs supplied in this conversation. Questions are based on the material represented in those documents.&lt;/footer&gt;</p>
-<p>&lt;script&gt;</p>
-<p>const Q = {</p>
-<p>heart: [</p>
-<p>{q:"Which two structures make up the cardiovascular system according to the notes?",o:["Heart and blood vessels","Heart and lungs","Arteries and nerves","Veins and lymph nodes"],a:0,e:"The notes introduce the cardiovascular system as consisting of the heart and blood vessels.",d:"easy"},</p>
-<p>{q:"What is the pericardium?",o:["A double-walled sac enclosing the heart","The thick muscular heart layer","A valve between the atria","A blood vessel supplying the heart"],a:0,e:"The pericardium is described as a double-walled sac enclosing the heart.",d:"easy"},</p>
-<p>{q:"Which pericardial membrane is made of dense connective tissue?",o:["Fibrous pericardium","Serous pericardium","Visceral layer","Parietal layer"],a:0,e:"The fibrous pericardium is a strong, dense connective tissue membrane.",d:"medium"},</p>
-<p>{q:"What is one function of the fibrous pericardium?",o:["Prevents overfilling of the heart","Produces cardiac muscle cells","Exchanges gases","Forms the heart valves"],a:0,e:"The notes state that it protects the heart, attaches it to surroundings and prevents overfilling.",d:"medium"},</p>
-<p>{q:"The serous pericardium consists of which two layers?",o:["Visceral and parietal","Intima and media","Endocardium and epicardium","Mucosa and submucosa"],a:0,e:"The serous pericardium has a visceral layer and a parietal layer.",d:"easy"},</p>
-<p>{q:"Where is the visceral layer of the serous pericardium attached?",o:["Directly to the outer heart muscle","To the fibrous pericardium","To the inner endocardium","To the aorta"],a:0,e:"The visceral layer is attached directly to the outer heart muscle.",d:"medium"},</p>
-<p>{q:"What is the function of pericardial fluid?",o:["Lubricates the layers and reduces friction","Increases blood pressure","Contracts the myocardium","Carries oxygen to the heart"],a:0,e:"Pericardial fluid lubricates between the parietal and visceral membranes, allowing smooth movement.",d:"easy"},</p>
-<p>{q:"Which sequence correctly lists the three layers of the heart wall from inner to outer?",o:["Endocardium, myocardium, epicardium","Myocardium, endocardium, epicardium","Epicardium, myocardium, endocardium","Endocardium, epicardium, myocardium"],a:0,e:"The heart wall has an inner endocardium, middle myocardium and outer epicardium.",d:"easy"},</p>
-<p>{q:"Which tissue forms the smooth inner lining of the heart?",o:["Endocardium","Myocardium","Epicardium","Fibrous pericardium"],a:0,e:"The endocardium is the thin inner lining of the heart.",d:"easy"},</p>
-<p>{q:"Which type of epithelium is found in the endocardium?",o:["Simple squamous endothelium","Stratified squamous epithelium","Transitional epithelium","Ciliated columnar epithelium"],a:0,e:"The endocardium contains simple squamous endothelium and subendothelial connective tissue.",d:"medium"},</p>
-<p>{q:"Which structures are found in the deeper layer of the endocardium?",o:["Purkinje fibers","Alveoli","Nephrons","Lymph follicles"],a:0,e:"The deeper layer of the endocardium contains Purkinje fibers.",d:"medium"},</p>
-<p>{q:"What is the main function of the endocardium's smooth surface?",o:["Reduces turbulence during blood flow","Stores most of the blood volume","Produces pericardial fluid","Creates the pumping force"],a:0,e:"The smooth endocardial surface supports blood flow and reduces turbulence.",d:"medium"},</p>
-<p>{q:"Which is the thickest layer of the heart wall?",o:["Myocardium","Endocardium","Epicardium","Parietal pericardium"],a:0,e:"The myocardium is the thickest layer and is responsible for the pumping action.",d:"easy"},</p>
-<p>{q:"Cardiac muscle cells are described as:",o:["Striated and involuntary","Smooth and voluntary","Non-striated and voluntary","Ciliated and involuntary"],a:0,e:"The notes describe cardiac muscle cells as striated and involuntary.",d:"easy"},</p>
-<p>{q:"Which feature is typical of cardiac muscle cells in the supplied notes?",o:["Branched cells with a single central nucleus","Long unbranched cells with many peripheral nuclei","Flat cells without nuclei","Cells with multiple layers of cilia"],a:0,e:"Cardiac muscle cells are branched and interconnected and contain a single central nucleus.",d:"medium"},</p>
-<p>{q:"Cardiomyocytes contain abundant mitochondria mainly as part of their specialization for:",o:["Contraction","Filtration","Blood storage","Lubrication"],a:0,e:"The notes identify cardiomyocytes as rich in mitochondria and specialized for contraction.",d:"medium"},</p>
-<p>{q:"What are sarcomeres associated with in cardiac muscle cells?",o:["Contraction","Blood clotting","Oxygen storage","Valve lubrication"],a:0,e:"The notes state that cardiomyocytes have organized sarcomeres for contraction.",d:"medium"},</p>
-<p>{q:"The epicardium is:",o:["The outermost layer and part of the visceral pericardium","The innermost endothelial lining","The thick muscular layer","The septum between ventricles"],a:0,e:"The epicardium is the outermost heart-wall layer and part of the visceral pericardium.",d:"easy"},</p>
-<p>{q:"Which structures are present in the epicardium?",o:["Mesothelial cells, loose connective tissue, fat, coronary vessels and nerves","Purkinje fibers only","Alveoli and cartilage","Nephrons and ducts"],a:0,e:"These are the components listed for the epicardium in the PDF.",d:"medium"},</p>
-<p>{q:"How many chambers does the heart have?",o:["Four","Two","Three","Five"],a:0,e:"The heart is described as a four-chambered muscular organ: two atria and two ventricles.",d:"easy"},</p>
-<p>{q:"Which chamber receives deoxygenated blood from the body?",o:["Right atrium","Left atrium","Right ventricle","Left ventricle"],a:0,e:"The right atrium receives deoxygenated blood returning from the body.",d:"easy"},</p>
-<p>{q:"Which chamber pumps oxygenated blood to the body?",o:["Left ventricle","Right ventricle","Right atrium","Left atrium"],a:0,e:"The left ventricle is the strongest chamber and pumps oxygenated blood to the body.",d:"easy"},</p>
-<p>{q:"Which valve lies between the right atrium and right ventricle?",o:["Tricuspid valve","Mitral valve","Aortic valve","Pulmonary valve"],a:0,e:"The tricuspid valve is located between the right atrium and right ventricle.",d:"easy"},</p>
-<p>{q:"Which valve connects the left ventricle to the aorta?",o:["Aortic valve","Mitral valve","Tricuspid valve","Pulmonary valve"],a:0,e:"The aortic valve is between the left ventricle and aorta.",d:"medium"},</p>
-<p>{q:"Which blood vessel type is identified as capacitance vessels in the notes?",o:["Veins","Arterioles","Capillaries","Aorta"],a:0,e:"The notes identify veins as capacitance vessels and state they hold roughly 64% of total blood volume.",d:"hard"},</p>
-<p>{q:"Which vessels are described as resistance vessels?",o:["Arterioles","Large veins","Capillaries","Vena cava"],a:0,e:"Arterioles adjust their diameter to control blood flow to specific tissues.",d:"hard"},</p>
-<p>{q:"Which tunica is the inner endothelial layer of most blood vessels?",o:["Tunica intima","Tunica media","Tunica adventitia","Myocardium"],a:0,e:"The tunica intima is the inner endothelial layer.",d:"medium"},</p>
-<p>{q:"Which tunica contains smooth muscle?",o:["Tunica media","Tunica intima","Tunica adventitia","Endocardium"],a:0,e:"The tunica media is the smooth muscle layer.",d:"medium"},</p>
-<p>{q:"Which blood vessels enable exchange of oxygen, nutrients and waste with tissues?",o:["Capillaries","Large arteries","Large veins","Aorta"],a:0,e:"Capillaries are tiny vessels that enable exchange with tissues.",d:"easy"},</p>
-<p>{q:"According to the notes, which structure divides the left and right sides of the heart?",o:["Septum","Apex","Base","Epicardium"],a:0,e:"The septum divides the left and right sides of the heart.",d:"medium"}</p>
-<p>],</p>
-<p>time: [</p>
-<p>{q:"Time management is best described as the systematic process of:",o:["Planning, organizing, prioritizing and controlling how time is allocated","Completing every task at the same time","Avoiding all breaks","Working without a schedule"],a:0,e:"The PDF defines time management as planning, organizing, prioritizing and controlling the allocation of available time.",d:"easy"},</p>
-<p>{q:"Which activity means deciding in advance what needs to be done and when?",o:["Planning","Delegation","Evaluation","Procrastination"],a:0,e:"Planning means deciding in advance what needs to be done and within what timeframe.",d:"easy"},</p>
-<p>{q:"Which term means arranging tasks, resources and responsibilities in a logical structure?",o:["Organizing","Scheduling","Reflection","Accountability"],a:0,e:"Organizing arranges tasks, resources and responsibilities in a manageable structure.",d:"easy"},</p>
-<p>{q:"Effective time management focuses on:",o:["Managing decisions, attention, energy, habits and behaviour","Controlling time itself literally","Increasing the number of tasks regardless of quality","Removing all flexibility"],a:0,e:"The notes explain that time itself cannot literally be controlled; self-management is central.",d:"medium"},</p>
-<p>{q:"Which characteristic means using time deliberately and purposefully?",o:["Intentionality","Adaptability","Accountability","Balance"],a:0,e:"Intentionality means time is used deliberately rather than being directed by unplanned demands.",d:"medium"},</p>
-<p>{q:"What is the difference between efficiency and effectiveness in the notes?",o:["Efficiency concerns how well tasks use time and resources; effectiveness concerns meaningful goals and outcomes","They mean exactly the same thing","Efficiency means doing more tasks; effectiveness means doing tasks faster","Effectiveness concerns punctuality only"],a:0,e:"Efficiency minimizes unnecessary effort and delay; effectiveness invests time in activities that contribute to meaningful goals.",d:"hard"},</p>
-<p>{q:"Which objective of time management is concerned with reducing unnecessary delays and distractions?",o:["Reduce time waste","Increase commitments","Avoid evaluation","Remove deadlines"],a:0,e:"Reducing time waste includes identifying interruptions, delays, poor organization and unnecessary activities.",d:"easy"},</p>
-<p>{q:"Which four time frames are presented in the time-management material?",o:["Immediate, short-term, medium-term and long-term","Daily, hourly, weekly and yearly only","Past, present, future and distant past","Urgent, routine, optional and cancelled"],a:0,e:"The material identifies immediate, short-term, medium-term and long-term planning frames.",d:"easy"},</p>
-<p>{q:"Breaking a complex objective into manageable activities and milestones mainly helps to:",o:["Make goals achievable and support consistent progress","Make the objective less measurable","Remove the need for deadlines","Avoid monitoring progress"],a:0,e:"Task breakdown divides complex objectives into manageable activities, measurable milestones and realistic deadlines.",d:"medium"},</p>
-<p>{q:"Healthcare planning is described as a process that begins by identifying:",o:["Healthcare needs","Staff holidays","Meeting minutes","Office decorations"],a:0,e:"Healthcare planning identifies needs, establishes priorities, defines objectives and organizes activities.",d:"easy"},</p>
-<p>{q:"Which type of planning generally defines an organization's long-term direction?",o:["Strategic planning","Operational planning","Daily task listing","Shift handover"],a:0,e:"Strategic planning is long-term and defines future organizational goals and strategies.",d:"easy"},</p>
-<p>{q:"Operational planning mainly translates strategic priorities into:",o:["Practical short-term activities and daily operations","A distant organizational vision only","Unmeasured personal wishes","Annual financial reports only"],a:0,e:"Operational planning develops detailed action plans for daily, weekly, monthly or annual activities.",d:"medium"},</p>
-<p>{q:"Which is a major impact of planning on patient safety?",o:["Prevention of medical errors","Increasing avoidable delays","Reducing communication","Ignoring changing risks"],a:0,e:"The planning PDF lists prevention of medical errors among its major patient-safety impacts.",d:"easy"},</p>
-<p>{q:"A meeting agenda is prepared:",o:["Before the meeting","Only after the meeting","Only when minutes are missing","At the end of the year"],a:0,e:"An agenda is prepared before a meeting and identifies objectives, topics, participants and time allocation.",d:"easy"},</p>
-<p>{q:"What is the purpose of meeting minutes?",o:["To record discussions, decisions, responsibilities, deadlines and follow-up actions","To advertise the meeting","To replace the agenda before the meeting","To record only attendance"],a:0,e:"Meeting minutes are the official written record of key discussions, decisions and actions.",d:"medium"},</p>
-<p>{q:"Who monitors the duration of discussions during a meeting?",o:["Timekeeper","Recorder","Participant","Guest"],a:0,e:"The timekeeper monitors discussion duration and helps prevent delays.",d:"easy"},</p>
-<p>{q:"In prioritization, urgency refers mainly to:",o:["How soon a task requires attention","How much a task contributes to long-term goals","How interesting a task is","Who assigned the task"],a:0,e:"Urgent tasks require timely attention; important tasks contribute significantly to meaningful objectives.",d:"medium"},</p>
-<p>{q:"Which prioritization tool is specifically named in the priorities PDF?",o:["Eisenhower Matrix","Fishbone diagram only","Gantt chart only","Ishikawa checklist only"],a:0,e:"The PDF lists the Eisenhower Matrix, ABCDE Method, Pareto Principle, MoSCoW Method and weighted scoring.",d:"medium"},</p>
-<p>{q:"What does SMART objective setting help ensure?",o:["Goals are clear and measurable and guide priorities","All tasks are urgent","Every task has equal importance","Plans never need adjustment"],a:0,e:"The priorities material says SMART objectives align activities with measurable outcomes.",d:"medium"},</p>
-<p>{q:"Which principle should guide prioritization in nursing according to the notes?",o:["Patient safety","Personal preference alone","Task length alone","Order in which requests arrive"],a:0,e:"The notes emphasize patient safety as the highest priority, guided by urgency, acuity, risk and professional responsibilities.",d:"hard"},</p>
-<p>{q:"Procrastination can be encouraged by which factor?",o:["Feeling overwhelmed by large or poorly defined tasks","Clear next steps","Realistic deadlines","Good self-regulation"],a:0,e:"The time-management material identifies feeling overwhelmed as a factor that can lead to task avoidance.",d:"medium"},</p>
-<p>{q:"Which is an example of an unproductive habit mentioned in the material?",o:["Repeatedly checking social media","Preparing materials in advance","Reviewing schedules","Arriving punctually"],a:0,e:"Repeated social-media checking, delaying difficult tasks and unnecessary multitasking are described as unproductive habits.",d:"easy"},</p>
-<p>{q:"What is a key strategy for controlling interruptions?",o:["Establish boundaries and protect focused work periods","Respond to every alert immediately","Keep every notification enabled","Schedule no task priorities"],a:0,e:"The notes emphasize protecting time from unnecessary interruptions and managing digital distractions.",d:"medium"},</p>
-<p>{q:"Organizational causes of time wasters usually arise from:",o:["Institutional structure, management, communication and work processes","Only individual emotions","Only personal hobbies","Only lack of ambition"],a:0,e:"The PDF describes organizational time wasters as inefficiencies arising from structure, management, communication and workplace processes.",d:"medium"},</p>
-<p>{q:"Which office-environment factor can affect concentration and productivity?",o:["Noise and environmental distractions","The colour of a textbook title only","The number of personal goals","The length of a patient's name"],a:0,e:"Noise and environmental distractions are listed among physical workspace factors affecting productivity.",d:"easy"},</p>
-<p>{q:"Emotional blocks to time management may arise from:",o:["Anxiety, fear, perfectionism, stress and low self-confidence","Only a lack of stationery","Only room temperature","Only task duration"],a:0,e:"The PDF lists anxiety, fear, perfectionism, stress, low self-confidence, guilt and difficulty managing emotions.",d:"easy"},</p>
-<p>{q:"What does protecting high-value goals involve?",o:["Safeguarding time, attention, energy and resources for important objectives","Giving every interruption priority","Avoiding long-term goals","Focusing only on routine tasks"],a:0,e:"The goals PDF defines protecting high-value goals as safeguarding resources needed for objectives with greatest importance or impact.",d:"medium"},</p>
-<p>{q:"What is the main distinction between goal ownership and accountability?",o:["Ownership concerns commitment to the goal; accountability concerns responsibility for results","They are identical concepts","Ownership concerns deadlines only; accountability concerns motivation only","Ownership is for managers only"],a:0,e:"The notes contrast personal commitment and initiative (ownership) with responsibility, monitoring and review of results (accountability).",d:"hard"},</p>
-<p>{q:"Why should priorities be reassessed continuously?",o:["Circumstances, risks, deadlines and responsibilities can change","The original plan is always wrong","It removes the need for planning","It makes every task equally urgent"],a:0,e:"The notes state that monitoring progress and responding to changing circumstances helps prevent delays and maintain productivity.",d:"medium"}</p>
-<p>]</p>
-<p>};</p>
-&nbsp;
-<p>let questions=[],answers=[],marked=[],index=0,seconds=0,tick=null,finalResult=null,reviewFilter="all",selectedSubject="heart";</p>
-<p>const $=id=&gt;document.getElementById(id);</p>
-<p>function shuffle(a){let x=[...a];for(let i=x.length-1;i&gt;0;i--){let j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}</p>
-<p>function start(){</p>
-<p>&nbsp;selectedSubject=$("subject").value;let pool=selectedSubject==="mixed"?[...Q.heart,...Q.time]:Q[selectedSubject];</p>
-<p>&nbsp;questions=shuffle(pool).slice(0,25);answers=Array(25).fill(null);marked=Array(25).fill(false);index=0;</p>
-<p>&nbsp;const mode=$("difficulty").value;seconds=mode==="easy"?1800:mode==="hard"?1200:mode==="medium"?1500:0;</p>
-<p>&nbsp;$("setup").classList.add("hidden");$("result").classList.add("hidden");$("review").classList.add("hidden");$("quiz").classList.remove("hidden");</p>
-<p>&nbsp;$("submitBtn").disabled=false;render();if(tick)clearInterval(tick);if(seconds){updateTimer();tick=setInterval(()=&gt;{seconds--;updateTimer();if(seconds&lt;=0){clearInterval(tick);finish(true)}},1000)}else $("timer").textContent="Practice mode";</p>
-<p>}</p>
-<p>function updateTimer(){let m=Math.floor(seconds/60),s=seconds%60;$("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}</p>
-<p>function render(){</p>
-<p>&nbsp;let q=questions[index];$("counter").textContent=`Question ${index+1} of 25`;$("progressBar").style.width=((index+1)/25*100)+"%";</p>
-<p>&nbsp;$("level").textContent=q.d.toUpperCase();$("questionText").textContent=q.q;$("options").innerHTML="";</p>
-<p>&nbsp;q.o.forEach((opt,i)=&gt;{let lab=document.createElement("label");lab.className="option";let inp=document.createElement("input");inp.type="radio";inp.name="answer";inp.checked=answers[index]===i;inp.addEventListener("change",()=&gt;answers[index]=i);let span=document.createElement("span");span.textContent=String.fromCharCode(65+i)+". "+opt;lab.append(inp,span);$("options").append(lab)});</p>
-<p>&nbsp;$("prevBtn").disabled=index===0;$("nextBtn").disabled=index===24;$("markedText").textContent=marked[index]?"★ This question is marked for review.":"";</p>
-<p>&nbsp;$("reviewBtn").textContent=marked[index]?"Unmark review":"Mark for review";</p>
-<p>}</p>
-<p>$("startBtn").onclick=start;</p>
-<p>$("prevBtn").onclick=()=&gt;{if(index&gt;0){index--;render()}};</p>
-<p>$("nextBtn").onclick=()=&gt;{if(index&lt;24){index++;render()}};</p>
-<p>$("reviewBtn").onclick=()=&gt;{marked[index]=!marked[index];render()};</p>
-<p>$("submitBtn").onclick=()=&gt;{let unanswered=answers.filter(x=&gt;x===null).length;if(unanswered&amp;&amp;!confirm(`${unanswered} question(s) are unanswered. Submit anyway?`))return;finish(false)};</p>
-<p>function finish(auto){</p>
-<p>&nbsp;if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=&gt;{if(answers[i]===q.a)correct++});</p>
-<p>&nbsp;let wrong=answers.filter((v,i)=&gt;v!==null&amp;&amp;v!==questions[i].a).length,unanswered=25-correct-wrong,pct=Math.round(correct/25*100);</p>
-<p>&nbsp;let band=pct&gt;=90?"Excellent":pct&gt;=80?"Very Good":pct&gt;=70?"Good":pct&gt;=50?"Average":"Needs Improvement";</p>
-<p>&nbsp;finalResult={correct,wrong,unanswered,pct,band};$("quiz").classList.add("hidden");$("result").classList.remove("hidden");</p>
-<p>&nbsp;$("greeting").textContent=($("student").value.trim()?`Well done, ${$("student").value.trim()}! `:"")+(auto?"Time is up. Your exam was submitted automatically.":"Your exam has been submitted.");</p>
-<p>&nbsp;$("score").textContent=`${correct} / 25`; $("performance").textContent=`${pct}% — ${band}`;</p>
-<p>&nbsp;$("summary").textContent=`Correct: ${correct}&nbsp; |&nbsp; Incorrect: ${wrong}&nbsp; |&nbsp; Unanswered: ${unanswered}`;</p>
-<p>}</p>
-<p>function showReview(filter){</p>
-<p>&nbsp;reviewFilter=filter;$("result").classList.add("hidden");$("review").classList.remove("hidden");$("reviewList").innerHTML="";</p>
-<p>&nbsp;questions.forEach((q,i)=&gt;{let ok=answers[i]===q.a;if(filter==="wrong"&amp;&amp;ok)return;let div=document.createElement("div");div.className="review-item";</p>
-<p>&nbsp;let title=document.createElement("div");title.innerHTML=`&lt;b&gt;Q${i+1}.&lt;/b&gt; ${q.q}`;div.append(title);</p>
-<p>&nbsp;let your=document.createElement("p");your.className=ok?"correct":"incorrect";your.textContent="Your answer: "+(answers[i]===null?"Not answered":String.fromCharCode(65+answers[i])+". "+q.o[answers[i]]);div.append(your);</p>
-<p>&nbsp;let correct=document.createElement("p");correct.className="correct";correct.textContent="Correct answer: "+String.fromCharCode(65+q.a)+". "+q.o[q.a];div.append(correct);</p>
-<p>&nbsp;let ex=document.createElement("p");ex.className="explain";ex.textContent="Explanation: "+q.e;div.append(ex);</p>
-<p>&nbsp;if(marked[i]){let m=document.createElement("span");m.className="badge";m.textContent="Marked for review";div.append(m)}</p>
-<p>&nbsp;$("reviewList").append(div);</p>
-<p>&nbsp;});</p>
-<p>}</p>
-<p>$("reviewAllBtn").onclick=()=&gt;showReview("all");$("wrongBtn").onclick=()=&gt;showReview("wrong");</p>
-<p>$("backResultBtn").onclick=()=&gt;{$("review").classList.add("hidden");$("result").classList.remove("hidden")};</p>
-<p>$("retakeBtn").onclick=()=&gt;{$("result").classList.add("hidden");$("setup").classList.remove("hidden");if(tick)clearInterval(tick)};</p>
-<p>$("printBtn").onclick=()=&gt;window.print();</p>
-<p>&lt;/script&gt;</p>
-<p>&lt;/body&gt;</p>
-<p>&lt;/html&gt;</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Quiz | Heart Histology & Time Management</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--text:#172033;--muted:#65718a;--primary:#3157d5;--line:#e2e8f0;--good:#16834b;--bad:#c73535}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(120deg,#172554,#3157d5);color:#fff;padding:26px 16px;text-align:center}
+header h1{margin:0 0 8px;font-size:clamp(22px,4vw,32px)}header p{margin:0;color:#dce5ff}
+main{max-width:900px;margin:24px auto;padding:0 14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 8px 24px #1725540a}
+label{display:block;font-weight:700;margin:12px 0 6px}input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font-size:16px;background:white;color:var(--text)}
+button{border:0;border-radius:9px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer;background:var(--primary);color:white}
+button.secondary{background:#e8edff;color:#203a9b}button:disabled{opacity:.4;cursor:not-allowed}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.progress{height:9px;background:#e8edf5;border-radius:99px;overflow:hidden;margin:12px 0 18px}.bar{height:100%;width:0;background:var(--primary);transition:width .2s}
+.meta{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px}.question{font-size:20px;line-height:1.45;font-weight:700;margin:16px 0}
+.option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:13px;margin:9px 0;cursor:pointer}
+.option:hover{border-color:var(--primary);background:#f7f8ff}.option input{width:auto;margin-top:3px;accent-color:var(--primary)}
+.badge{display:inline-block;border-radius:30px;padding:5px 10px;font-size:12px;font-weight:700;background:#edf1ff;color:#304bb3}
+.hidden{display:none!important}.score{font-size:42px;font-weight:800;color:var(--primary)}.review-item{border-top:1px solid var(--line);padding:16px 0}.correct{color:var(--good);font-weight:700}.incorrect{color:var(--bad);font-weight:700}.explain{color:var(--muted);margin-top:8px;line-height:1.5}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
+@media(max-width:600px){.row{grid-template-columns:1fr}.card{padding:17px}.question{font-size:18px}.meta{font-size:12px}}
+</style>
+</head>
+<body>
+<header><h1>Interactive Study Quiz</h1><p>Heart Histology • Time and Task Management</p></header>
+<main>
+<section id="setup" class="card">
+<h2>Start your examination</h2>
+<label for="student">Your name (optional)</label><input id="student" placeholder="Enter your name">
+<div class="row">
+<div><label for="subject">Choose subject</label><select id="subject">
+<option value="heart">Heart Histology</option><option value="time">Time Management (all six PDFs)</option><option value="mixed">Mixed Quiz – Both Subjects</option>
+</select></div>
+<div><label for="difficulty">Difficulty mode</label><select id="difficulty">
+<option value="easy">Easy – 30 minutes</option><option value="medium" selected>Medium – 25 minutes</option><option value="hard">Hard – 20 minutes</option><option value="practice">Practice – no timer</option>
+</select></div>
+</div>
+<p class="explain">Each exam contains 25 questions. Questions and answer choices are shuffled. Select an answer for each question, move back and forth, and submit when finished.</p>
+<button id="startBtn">Start quiz</button>
+</section>
+
+<section id="quiz" class="card hidden">
+<div class="meta"><span id="counter">Question 1 of 25</span><span id="timer">25:00</span></div>
+<div class="progress"><div id="progressBar" class="bar"></div></div>
+<div><span id="level" class="badge">MEDIUM</span></div>
+<div id="questionText" class="question"></div>
+<div id="options"></div>
+<div class="actions">
+<button class="secondary" id="prevBtn">Previous</button><button class="secondary" id="nextBtn">Next</button>
+<button class="secondary" id="reviewBtn">Mark for review</button><button id="submitBtn">Submit exam</button>
+</div>
+<p class="explain" id="markedText"></p>
+</section>
+
+<section id="result" class="card hidden">
+<h2>Examination result</h2><p id="greeting"></p><div class="score" id="score"></div>
+<p id="performance"></p><p id="summary"></p>
+<div class="actions"><button id="reviewAllBtn">Review all answers</button><button class="secondary" id="wrongBtn">Review incorrect only</button><button class="secondary" id="retakeBtn">Retake quiz</button><button class="secondary" id="printBtn">Print / Save PDF</button></div>
+</section>
+<section id="review" class="card hidden"><h2>Answer review</h2><div id="reviewList"></div><button class="secondary" id="backResultBtn">Back to result</button></section>
+</main>
+<footer>Study tool generated from the seven PDFs supplied in this conversation. Questions are based on the material represented in those documents.</footer>
+<script>
+const Q = {
+heart: [
+{q:"Which two structures make up the cardiovascular system according to the notes?",o:["Heart and blood vessels","Heart and lungs","Arteries and nerves","Veins and lymph nodes"],a:0,e:"The notes introduce the cardiovascular system as consisting of the heart and blood vessels.",d:"easy"},
+{q:"What is the pericardium?",o:["A double-walled sac enclosing the heart","The thick muscular heart layer","A valve between the atria","A blood vessel supplying the heart"],a:0,e:"The pericardium is described as a double-walled sac enclosing the heart.",d:"easy"},
+{q:"Which pericardial membrane is made of dense connective tissue?",o:["Fibrous pericardium","Serous pericardium","Visceral layer","Parietal layer"],a:0,e:"The fibrous pericardium is a strong, dense connective tissue membrane.",d:"medium"},
+{q:"What is one function of the fibrous pericardium?",o:["Prevents overfilling of the heart","Produces cardiac muscle cells","Exchanges gases","Forms the heart valves"],a:0,e:"The notes state that it protects the heart, attaches it to surroundings and prevents overfilling.",d:"medium"},
+{q:"The serous pericardium consists of which two layers?",o:["Visceral and parietal","Intima and media","Endocardium and epicardium","Mucosa and submucosa"],a:0,e:"The serous pericardium has a visceral layer and a parietal layer.",d:"easy"},
+{q:"Where is the visceral layer of the serous pericardium attached?",o:["Directly to the outer heart muscle","To the fibrous pericardium","To the inner endocardium","To the aorta"],a:0,e:"The visceral layer is attached directly to the outer heart muscle.",d:"medium"},
+{q:"What is the function of pericardial fluid?",o:["Lubricates the layers and reduces friction","Increases blood pressure","Contracts the myocardium","Carries oxygen to the heart"],a:0,e:"Pericardial fluid lubricates between the parietal and visceral membranes, allowing smooth movement.",d:"easy"},
+{q:"Which sequence correctly lists the three layers of the heart wall from inner to outer?",o:["Endocardium, myocardium, epicardium","Myocardium, endocardium, epicardium","Epicardium, myocardium, endocardium","Endocardium, epicardium, myocardium"],a:0,e:"The heart wall has an inner endocardium, middle myocardium and outer epicardium.",d:"easy"},
+{q:"Which tissue forms the smooth inner lining of the heart?",o:["Endocardium","Myocardium","Epicardium","Fibrous pericardium"],a:0,e:"The endocardium is the thin inner lining of the heart.",d:"easy"},
+{q:"Which type of epithelium is found in the endocardium?",o:["Simple squamous endothelium","Stratified squamous epithelium","Transitional epithelium","Ciliated columnar epithelium"],a:0,e:"The endocardium contains simple squamous endothelium and subendothelial connective tissue.",d:"medium"},
+{q:"Which structures are found in the deeper layer of the endocardium?",o:["Purkinje fibers","Alveoli","Nephrons","Lymph follicles"],a:0,e:"The deeper layer of the endocardium contains Purkinje fibers.",d:"medium"},
+{q:"What is the main function of the endocardium's smooth surface?",o:["Reduces turbulence during blood flow","Stores most of the blood volume","Produces pericardial fluid","Creates the pumping force"],a:0,e:"The smooth endocardial surface supports blood flow and reduces turbulence.",d:"medium"},
+{q:"Which is the thickest layer of the heart wall?",o:["Myocardium","Endocardium","Epicardium","Parietal pericardium"],a:0,e:"The myocardium is the thickest layer and is responsible for the pumping action.",d:"easy"},
+{q:"Cardiac muscle cells are described as:",o:["Striated and involuntary","Smooth and voluntary","Non-striated and voluntary","Ciliated and involuntary"],a:0,e:"The notes describe cardiac muscle cells as striated and involuntary.",d:"easy"},
+{q:"Which feature is typical of cardiac muscle cells in the supplied notes?",o:["Branched cells with a single central nucleus","Long unbranched cells with many peripheral nuclei","Flat cells without nuclei","Cells with multiple layers of cilia"],a:0,e:"Cardiac muscle cells are branched and interconnected and contain a single central nucleus.",d:"medium"},
+{q:"Cardiomyocytes contain abundant mitochondria mainly as part of their specialization for:",o:["Contraction","Filtration","Blood storage","Lubrication"],a:0,e:"The notes identify cardiomyocytes as rich in mitochondria and specialized for contraction.",d:"medium"},
+{q:"What are sarcomeres associated with in cardiac muscle cells?",o:["Contraction","Blood clotting","Oxygen storage","Valve lubrication"],a:0,e:"The notes state that cardiomyocytes have organized sarcomeres for contraction.",d:"medium"},
+{q:"The epicardium is:",o:["The outermost layer and part of the visceral pericardium","The innermost endothelial lining","The thick muscular layer","The septum between ventricles"],a:0,e:"The epicardium is the outermost heart-wall layer and part of the visceral pericardium.",d:"easy"},
+{q:"Which structures are present in the epicardium?",o:["Mesothelial cells, loose connective tissue, fat, coronary vessels and nerves","Purkinje fibers only","Alveoli and cartilage","Nephrons and ducts"],a:0,e:"These are the components listed for the epicardium in the PDF.",d:"medium"},
+{q:"How many chambers does the heart have?",o:["Four","Two","Three","Five"],a:0,e:"The heart is described as a four-chambered muscular organ: two atria and two ventricles.",d:"easy"},
+{q:"Which chamber receives deoxygenated blood from the body?",o:["Right atrium","Left atrium","Right ventricle","Left ventricle"],a:0,e:"The right atrium receives deoxygenated blood returning from the body.",d:"easy"},
+{q:"Which chamber pumps oxygenated blood to the body?",o:["Left ventricle","Right ventricle","Right atrium","Left atrium"],a:0,e:"The left ventricle is the strongest chamber and pumps oxygenated blood to the body.",d:"easy"},
+{q:"Which valve lies between the right atrium and right ventricle?",o:["Tricuspid valve","Mitral valve","Aortic valve","Pulmonary valve"],a:0,e:"The tricuspid valve is located between the right atrium and right ventricle.",d:"easy"},
+{q:"Which valve connects the left ventricle to the aorta?",o:["Aortic valve","Mitral valve","Tricuspid valve","Pulmonary valve"],a:0,e:"The aortic valve is between the left ventricle and aorta.",d:"medium"},
+{q:"Which blood vessel type is identified as capacitance vessels in the notes?",o:["Veins","Arterioles","Capillaries","Aorta"],a:0,e:"The notes identify veins as capacitance vessels and state they hold roughly 64% of total blood volume.",d:"hard"},
+{q:"Which vessels are described as resistance vessels?",o:["Arterioles","Large veins","Capillaries","Vena cava"],a:0,e:"Arterioles adjust their diameter to control blood flow to specific tissues.",d:"hard"},
+{q:"Which tunica is the inner endothelial layer of most blood vessels?",o:["Tunica intima","Tunica media","Tunica adventitia","Myocardium"],a:0,e:"The tunica intima is the inner endothelial layer.",d:"medium"},
+{q:"Which tunica contains smooth muscle?",o:["Tunica media","Tunica intima","Tunica adventitia","Endocardium"],a:0,e:"The tunica media is the smooth muscle layer.",d:"medium"},
+{q:"Which blood vessels enable exchange of oxygen, nutrients and waste with tissues?",o:["Capillaries","Large arteries","Large veins","Aorta"],a:0,e:"Capillaries are tiny vessels that enable exchange with tissues.",d:"easy"},
+{q:"According to the notes, which structure divides the left and right sides of the heart?",o:["Septum","Apex","Base","Epicardium"],a:0,e:"The septum divides the left and right sides of the heart.",d:"medium"}
+],
+time: [
+{q:"Time management is best described as the systematic process of:",o:["Planning, organizing, prioritizing and controlling how time is allocated","Completing every task at the same time","Avoiding all breaks","Working without a schedule"],a:0,e:"The PDF defines time management as planning, organizing, prioritizing and controlling the allocation of available time.",d:"easy"},
+{q:"Which activity means deciding in advance what needs to be done and when?",o:["Planning","Delegation","Evaluation","Procrastination"],a:0,e:"Planning means deciding in advance what needs to be done and within what timeframe.",d:"easy"},
+{q:"Which term means arranging tasks, resources and responsibilities in a logical structure?",o:["Organizing","Scheduling","Reflection","Accountability"],a:0,e:"Organizing arranges tasks, resources and responsibilities in a manageable structure.",d:"easy"},
+{q:"Effective time management focuses on:",o:["Managing decisions, attention, energy, habits and behaviour","Controlling time itself literally","Increasing the number of tasks regardless of quality","Removing all flexibility"],a:0,e:"The notes explain that time itself cannot literally be controlled; self-management is central.",d:"medium"},
+{q:"Which characteristic means using time deliberately and purposefully?",o:["Intentionality","Adaptability","Accountability","Balance"],a:0,e:"Intentionality means time is used deliberately rather than being directed by unplanned demands.",d:"medium"},
+{q:"What is the difference between efficiency and effectiveness in the notes?",o:["Efficiency concerns how well tasks use time and resources; effectiveness concerns meaningful goals and outcomes","They mean exactly the same thing","Efficiency means doing more tasks; effectiveness means doing tasks faster","Effectiveness concerns punctuality only"],a:0,e:"Efficiency minimizes unnecessary effort and delay; effectiveness invests time in activities that contribute to meaningful goals.",d:"hard"},
+{q:"Which objective of time management is concerned with reducing unnecessary delays and distractions?",o:["Reduce time waste","Increase commitments","Avoid evaluation","Remove deadlines"],a:0,e:"Reducing time waste includes identifying interruptions, delays, poor organization and unnecessary activities.",d:"easy"},
+{q:"Which four time frames are presented in the time-management material?",o:["Immediate, short-term, medium-term and long-term","Daily, hourly, weekly and yearly only","Past, present, future and distant past","Urgent, routine, optional and cancelled"],a:0,e:"The material identifies immediate, short-term, medium-term and long-term planning frames.",d:"easy"},
+{q:"Breaking a complex objective into manageable activities and milestones mainly helps to:",o:["Make goals achievable and support consistent progress","Make the objective less measurable","Remove the need for deadlines","Avoid monitoring progress"],a:0,e:"Task breakdown divides complex objectives into manageable activities, measurable milestones and realistic deadlines.",d:"medium"},
+{q:"Healthcare planning is described as a process that begins by identifying:",o:["Healthcare needs","Staff holidays","Meeting minutes","Office decorations"],a:0,e:"Healthcare planning identifies needs, establishes priorities, defines objectives and organizes activities.",d:"easy"},
+{q:"Which type of planning generally defines an organization's long-term direction?",o:["Strategic planning","Operational planning","Daily task listing","Shift handover"],a:0,e:"Strategic planning is long-term and defines future organizational goals and strategies.",d:"easy"},
+{q:"Operational planning mainly translates strategic priorities into:",o:["Practical short-term activities and daily operations","A distant organizational vision only","Unmeasured personal wishes","Annual financial reports only"],a:0,e:"Operational planning develops detailed action plans for daily, weekly, monthly or annual activities.",d:"medium"},
+{q:"Which is a major impact of planning on patient safety?",o:["Prevention of medical errors","Increasing avoidable delays","Reducing communication","Ignoring changing risks"],a:0,e:"The planning PDF lists prevention of medical errors among its major patient-safety impacts.",d:"easy"},
+{q:"A meeting agenda is prepared:",o:["Before the meeting","Only after the meeting","Only when minutes are missing","At the end of the year"],a:0,e:"An agenda is prepared before a meeting and identifies objectives, topics, participants and time allocation.",d:"easy"},
+{q:"What is the purpose of meeting minutes?",o:["To record discussions, decisions, responsibilities, deadlines and follow-up actions","To advertise the meeting","To replace the agenda before the meeting","To record only attendance"],a:0,e:"Meeting minutes are the official written record of key discussions, decisions and actions.",d:"medium"},
+{q:"Who monitors the duration of discussions during a meeting?",o:["Timekeeper","Recorder","Participant","Guest"],a:0,e:"The timekeeper monitors discussion duration and helps prevent delays.",d:"easy"},
+{q:"In prioritization, urgency refers mainly to:",o:["How soon a task requires attention","How much a task contributes to long-term goals","How interesting a task is","Who assigned the task"],a:0,e:"Urgent tasks require timely attention; important tasks contribute significantly to meaningful objectives.",d:"medium"},
+{q:"Which prioritization tool is specifically named in the priorities PDF?",o:["Eisenhower Matrix","Fishbone diagram only","Gantt chart only","Ishikawa checklist only"],a:0,e:"The PDF lists the Eisenhower Matrix, ABCDE Method, Pareto Principle, MoSCoW Method and weighted scoring.",d:"medium"},
+{q:"What does SMART objective setting help ensure?",o:["Goals are clear and measurable and guide priorities","All tasks are urgent","Every task has equal importance","Plans never need adjustment"],a:0,e:"The priorities material says SMART objectives align activities with measurable outcomes.",d:"medium"},
+{q:"Which principle should guide prioritization in nursing according to the notes?",o:["Patient safety","Personal preference alone","Task length alone","Order in which requests arrive"],a:0,e:"The notes emphasize patient safety as the highest priority, guided by urgency, acuity, risk and professional responsibilities.",d:"hard"},
+{q:"Procrastination can be encouraged by which factor?",o:["Feeling overwhelmed by large or poorly defined tasks","Clear next steps","Realistic deadlines","Good self-regulation"],a:0,e:"The time-management material identifies feeling overwhelmed as a factor that can lead to task avoidance.",d:"medium"},
+{q:"Which is an example of an unproductive habit mentioned in the material?",o:["Repeatedly checking social media","Preparing materials in advance","Reviewing schedules","Arriving punctually"],a:0,e:"Repeated social-media checking, delaying difficult tasks and unnecessary multitasking are described as unproductive habits.",d:"easy"},
+{q:"What is a key strategy for controlling interruptions?",o:["Establish boundaries and protect focused work periods","Respond to every alert immediately","Keep every notification enabled","Schedule no task priorities"],a:0,e:"The notes emphasize protecting time from unnecessary interruptions and managing digital distractions.",d:"medium"},
+{q:"Organizational causes of time wasters usually arise from:",o:["Institutional structure, management, communication and work processes","Only individual emotions","Only personal hobbies","Only lack of ambition"],a:0,e:"The PDF describes organizational time wasters as inefficiencies arising from structure, management, communication and workplace processes.",d:"medium"},
+{q:"Which office-environment factor can affect concentration and productivity?",o:["Noise and environmental distractions","The colour of a textbook title only","The number of personal goals","The length of a patient's name"],a:0,e:"Noise and environmental distractions are listed among physical workspace factors affecting productivity.",d:"easy"},
+{q:"Emotional blocks to time management may arise from:",o:["Anxiety, fear, perfectionism, stress and low self-confidence","Only a lack of stationery","Only room temperature","Only task duration"],a:0,e:"The PDF lists anxiety, fear, perfectionism, stress, low self-confidence, guilt and difficulty managing emotions.",d:"easy"},
+{q:"What does protecting high-value goals involve?",o:["Safeguarding time, attention, energy and resources for important objectives","Giving every interruption priority","Avoiding long-term goals","Focusing only on routine tasks"],a:0,e:"The goals PDF defines protecting high-value goals as safeguarding resources needed for objectives with greatest importance or impact.",d:"medium"},
+{q:"What is the main distinction between goal ownership and accountability?",o:["Ownership concerns commitment to the goal; accountability concerns responsibility for results","They are identical concepts","Ownership concerns deadlines only; accountability concerns motivation only","Ownership is for managers only"],a:0,e:"The notes contrast personal commitment and initiative (ownership) with responsibility, monitoring and review of results (accountability).",d:"hard"},
+{q:"Why should priorities be reassessed continuously?",o:["Circumstances, risks, deadlines and responsibilities can change","The original plan is always wrong","It removes the need for planning","It makes every task equally urgent"],a:0,e:"The notes state that monitoring progress and responding to changing circumstances helps prevent delays and maintain productivity.",d:"medium"}
+]
+};
+
+let questions=[],answers=[],marked=[],index=0,seconds=0,tick=null,finalResult=null,reviewFilter="all",selectedSubject="heart";
+const $=id=>document.getElementById(id);
+function shuffle(a){let x=[...a];for(let i=x.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+function start(){
+ selectedSubject=$("subject").value;let pool=selectedSubject==="mixed"?[...Q.heart,...Q.time]:Q[selectedSubject];
+ questions=shuffle(pool).slice(0,25);answers=Array(25).fill(null);marked=Array(25).fill(false);index=0;
+ const mode=$("difficulty").value;seconds=mode==="easy"?1800:mode==="hard"?1200:mode==="medium"?1500:0;
+ $("setup").classList.add("hidden");$("result").classList.add("hidden");$("review").classList.add("hidden");$("quiz").classList.remove("hidden");
+ $("submitBtn").disabled=false;render();if(tick)clearInterval(tick);if(seconds){updateTimer();tick=setInterval(()=>{seconds--;updateTimer();if(seconds<=0){clearInterval(tick);finish(true)}},1000)}else $("timer").textContent="Practice mode";
+}
+function updateTimer(){let m=Math.floor(seconds/60),s=seconds%60;$("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
+function render(){
+ let q=questions[index];$("counter").textContent=`Question ${index+1} of 25`;$("progressBar").style.width=((index+1)/25*100)+"%";
+ $("level").textContent=q.d.toUpperCase();$("questionText").textContent=q.q;$("options").innerHTML="";
+ q.o.forEach((opt,i)=>{let lab=document.createElement("label");lab.className="option";let inp=document.createElement("input");inp.type="radio";inp.name="answer";inp.checked=answers[index]===i;inp.addEventListener("change",()=>answers[index]=i);let span=document.createElement("span");span.textContent=String.fromCharCode(65+i)+". "+opt;lab.append(inp,span);$("options").append(lab)});
+ $("prevBtn").disabled=index===0;$("nextBtn").disabled=index===24;$("markedText").textContent=marked[index]?"★ This question is marked for review.":"";
+ $("reviewBtn").textContent=marked[index]?"Unmark review":"Mark for review";
+}
+$("startBtn").onclick=start;
+$("prevBtn").onclick=()=>{if(index>0){index--;render()}};
+$("nextBtn").onclick=()=>{if(index<24){index++;render()}};
+$("reviewBtn").onclick=()=>{marked[index]=!marked[index];render()};
+$("submitBtn").onclick=()=>{let unanswered=answers.filter(x=>x===null).length;if(unanswered&&!confirm(`${unanswered} question(s) are unanswered. Submit anyway?`))return;finish(false)};
+function finish(auto){
+ if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=>{if(answers[i]===q.a)correct++});
+ let wrong=answers.filter((v,i)=>v!==null&&v!==questions[i].a).length,unanswered=25-correct-wrong,pct=Math.round(correct/25*100);
+ let band=pct>=90?"Excellent":pct>=80?"Very Good":pct>=70?"Good":pct>=50?"Average":"Needs Improvement";
+ finalResult={correct,wrong,unanswered,pct,band};$("quiz").classList.add("hidden");$("result").classList.remove("hidden");
+ $("greeting").textContent=($("student").value.trim()?`Well done, ${$("student").value.trim()}! `:"")+(auto?"Time is up. Your exam was submitted automatically.":"Your exam has been submitted.");
+ $("score").textContent=`${correct} / 25`; $("performance").textContent=`${pct}% — ${band}`;
+ $("summary").textContent=`Correct: ${correct}  |  Incorrect: ${wrong}  |  Unanswered: ${unanswered}`;
+}
+function showReview(filter){
+ reviewFilter=filter;$("result").classList.add("hidden");$("review").classList.remove("hidden");$("reviewList").innerHTML="";
+ questions.forEach((q,i)=>{let ok=answers[i]===q.a;if(filter==="wrong"&&ok)return;let div=document.createElement("div");div.className="review-item";
+ let title=document.createElement("div");title.innerHTML=`<b>Q${i+1}.</b> ${q.q}`;div.append(title);
+ let your=document.createElement("p");your.className=ok?"correct":"incorrect";your.textContent="Your answer: "+(answers[i]===null?"Not answered":String.fromCharCode(65+answers[i])+". "+q.o[answers[i]]);div.append(your);
+ let correct=document.createElement("p");correct.className="correct";correct.textContent="Correct answer: "+String.fromCharCode(65+q.a)+". "+q.o[q.a];div.append(correct);
+ let ex=document.createElement("p");ex.className="explain";ex.textContent="Explanation: "+q.e;div.append(ex);
+ if(marked[i]){let m=document.createElement("span");m.className="badge";m.textContent="Marked for review";div.append(m)}
+ $("reviewList").append(div);
+ });
+}
+$("reviewAllBtn").onclick=()=>showReview("all");$("wrongBtn").onclick=()=>showReview("wrong");
+$("backResultBtn").onclick=()=>{$("review").classList.add("hidden");$("result").classList.remove("hidden")};
+$("retakeBtn").onclick=()=>{$("result").classList.add("hidden");$("setup").classList.remove("hidden");if(tick)clearInterval(tick)};
+$("printBtn").onclick=()=>window.print();
+</script>
+</body>
+</html>

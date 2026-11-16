@@ -3,18 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Interactive Assessment Engine</title>
+    <title>Master Assessment Engine - 125 Questions</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-        }
         .fade-in { animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
@@ -25,9 +21,9 @@
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
 
     <!-- Header / Navbar -->
-    <header class="border-b border-slate-800 bg-slate-950/70 sticky top-0 z-50 backdrop-blur-md">
+    <header class="border-b border-slate-800 bg-slate-950/80 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="returnToHome()">
                 <div class="p-2 bg-indigo-600 rounded-lg text-white">
                     <i class="fa-solid fa-graduation-cap text-lg"></i>
                 </div>
@@ -44,6 +40,9 @@
                 <div class="w-32 bg-slate-800 rounded-full h-2 overflow-hidden">
                     <div id="progressBar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
                 </div>
+                <button onclick="confirmExit()" class="text-xs text-slate-400 hover:text-rose-400 transition-all border border-slate-700 px-3 py-1.5 rounded-lg">
+                    Exit Quiz
+                </button>
             </div>
         </div>
     </header>
@@ -51,56 +50,105 @@
     <!-- Main Container -->
     <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-8 flex flex-col justify-center">
 
-        <!-- SETUP SCREEN -->
-        <div id="setupScreen" class="fade-in space-y-6">
+        <!-- SETUP / HOME SCREEN -->
+        <div id="setupScreen" class="fade-in space-y-6 my-auto">
             <div class="text-center space-y-2">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-white">Select Your Quiz Domain</h1>
-                <p class="text-slate-400 max-w-xl mx-auto">Customize your test parameters. Choose a specific module to focus on or attempt the full 25-question comprehensive assessment.</p>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white">Select Your Quiz Module</h1>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    Choose a specific subject area below (25 questions each) or attempt the 25-Question Combined Assessment (5 random questions curated from each topic).
+                </p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-                <button onclick="selectCategory('all')" class="category-card p-6 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/80 hover:border-indigo-500/50 transition-all text-left group">
-                    <div class="flex items-start justify-between">
-                        <div class="p-3 rounded-lg bg-indigo-500/10 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-layer-group text-xl"></i>
+            <div class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto pt-4">
+                
+                <!-- Topic 1 -->
+                <button onclick="startQuiz('heart')" class="p-6 rounded-2xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/90 hover:border-rose-500/50 transition-all text-left group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between">
+                            <div class="p-3 rounded-xl bg-rose-500/10 text-rose-400 group-hover:bg-rose-500 group-hover:text-white transition-all">
+                                <i class="fa-solid fa-heart-pulse text-2xl"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-700 text-slate-300">25 Questions</span>
                         </div>
-                        <span class="text-xs px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">25 Questions</span>
+                        <h3 class="text-xl font-bold mt-4 text-slate-100">1. Heart Histology & Vascular System</h3>
+                        <p class="text-sm text-slate-400 mt-2">Pericardium layers, myocardial structure, intercalated discs, tunic layers, capacitance vessels, and cardiac conduction histology.</p>
                     </div>
-                    <h3 class="text-lg font-semibold mt-4 text-slate-200">Full Comprehensive Test</h3>
-                    <p class="text-sm text-slate-400 mt-1">Covers all histology, time frames, priorities, and psychology modules.</p>
+                    <div class="mt-6 flex items-center text-rose-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                        Start Topic Assessment <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
                 </button>
 
-                <button onclick="selectCategory('heart')" class="category-card p-6 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/80 hover:border-rose-500/50 transition-all text-left group">
-                    <div class="flex items-start justify-between">
-                        <div class="p-3 rounded-lg bg-rose-500/10 text-rose-400 group-hover:bg-rose-500 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-heart-pulse text-xl"></i>
+                <!-- Topic 2 -->
+                <button onclick="startQuiz('time')" class="p-6 rounded-2xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/90 hover:border-cyan-500/50 transition-all text-left group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between">
+                            <div class="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-all">
+                                <i class="fa-solid fa-hourglass-half text-2xl"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-700 text-slate-300">25 Questions</span>
                         </div>
-                        <span class="text-xs px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">6 Questions</span>
+                        <h3 class="text-xl font-bold mt-4 text-slate-100">2. Time Management & Four Time Frames</h3>
+                        <p class="text-sm text-slate-400 mt-2">Four planning horizons, chronotypes, planning fallacy, time-blocking, task switching costs, and bio-rhythm optimization.</p>
                     </div>
-                    <h3 class="text-lg font-semibold mt-4 text-slate-200">Heart Histology</h3>
-                    <p class="text-sm text-slate-400 mt-1">Pericardium layers, cardiac muscle micro-anatomy, and vascular tunics.</p>
+                    <div class="mt-6 flex items-center text-cyan-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                        Start Topic Assessment <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
                 </button>
 
-                <button onclick="selectCategory('time')" class="category-card p-6 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/80 hover:border-cyan-500/50 transition-all text-left group">
-                    <div class="flex items-start justify-between">
-                        <div class="p-3 rounded-lg bg-cyan-500/10 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-hourglass-half text-xl"></i>
+                <!-- Topic 3 -->
+                <button onclick="startQuiz('priorities')" class="p-6 rounded-2xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/90 hover:border-amber-500/50 transition-all text-left group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between">
+                            <div class="p-3 rounded-xl bg-amber-500/10 text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-all">
+                                <i class="fa-solid fa-list-check text-2xl"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-700 text-slate-300">25 Questions</span>
                         </div>
-                        <span class="text-xs px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">7 Questions</span>
+                        <h3 class="text-xl font-bold mt-4 text-slate-100">3. Priorities, Decision-Making & Matrices</h3>
+                        <p class="text-sm text-slate-400 mt-2">Eisenhower Matrix (Q1-Q4), Brian Tracy's ABCDE method, Pareto 80/20 rule, dependencies, non-negotiables, and lagging/leading metrics.</p>
                     </div>
-                    <h3 class="text-lg font-semibold mt-4 text-slate-200">Time Frames & Planning</h3>
-                    <p class="text-sm text-slate-400 mt-1">Four time horizons, chronotypes, time blocking, and planning fallacy.</p>
+                    <div class="mt-6 flex items-center text-amber-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                        Start Topic Assessment <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
                 </button>
 
-                <button onclick="selectCategory('priorities')" class="category-card p-6 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/80 hover:border-amber-500/50 transition-all text-left group">
-                    <div class="flex items-start justify-between">
-                        <div class="p-3 rounded-lg bg-amber-500/10 text-amber-400 group-hover:bg-amber-500 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-list-check text-xl"></i>
+                <!-- Topic 4 -->
+                <button onclick="startQuiz('psychology')" class="p-6 rounded-2xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800/90 hover:border-emerald-500/50 transition-all text-left group flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between">
+                            <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                                <i class="fa-solid fa-brain text-2xl"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-700 text-slate-300">25 Questions</span>
                         </div>
-                        <span class="text-xs px-2.5 py-1 rounded-full bg-slate-700 text-slate-300">6 Questions</span>
+                        <h3 class="text-xl font-bold mt-4 text-slate-100">4. Psychology, Procrastination & Disruptions</h3>
+                        <p class="text-sm text-slate-400 mt-2">Emotional self-regulation, Cognitive Load Theory, Implementation Intentions (If-Then), Pomodoro, and Stop-Assess-Decide-Respond.</p>
                     </div>
-                    <h3 class="text-lg font-semibold mt-4 text-slate-200">Priorities & Decision Models</h3>
-                    <p class="text-sm text-slate-400 mt-1">Eisenhower Matrix, ABCDE prioritization, and Pareto 80/20 analysis.</p>
+                    <div class="mt-6 flex items-center text-emerald-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                        Start Topic Assessment <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </button>
+
+            </div>
+
+            <!-- Combined Option -->
+            <div class="max-w-4xl mx-auto pt-2">
+                <button onclick="startQuiz('combined')" class="w-full p-6 rounded-2xl border border-indigo-500/40 bg-gradient-to-r from-indigo-950/60 to-slate-900 hover:from-indigo-900/60 hover:to-slate-800 hover:border-indigo-400 transition-all text-left group flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="p-4 rounded-xl bg-indigo-500 text-white shadow-lg shadow-indigo-500/30">
+                            <i class="fa-solid fa-layer-group text-2xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-xl font-bold text-white">25-Question Combined Assessment</h3>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Curated Mix</span>
+                            </div>
+                            <p class="text-sm text-slate-400 mt-1">Evaluates all 4 domain areas simultaneously (5-7 questions randomly pulled per topic for 25 questions total).</p>
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold group-hover:bg-indigo-500 transition-all flex items-center gap-2 shrink-0">
+                        Launch Combined Quiz <i class="fa-solid fa-bolt"></i>
+                    </div>
                 </button>
             </div>
         </div>
@@ -108,98 +156,408 @@
         <!-- ACTIVE QUIZ ENGINE SCREEN -->
         <div id="quizScreen" class="hidden fade-in space-y-6">
             <div class="flex justify-between items-center text-sm font-medium text-slate-400">
-                <span id="questionCategoryTag" class="px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20 uppercase tracking-wider text-xs">Topic</span>
-                <span id="questionCounter">Question 1 of 25</span>
+                <span id="questionCategoryTag" class="px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20 uppercase tracking-wider text-xs font-bold">Topic</span>
+                <span id="questionCounter" class="font-mono text-slate-300">Question 1 of 25</span>
             </div>
 
             <!-- Question Card -->
-            <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 md:p-8 backdrop-blur-md shadow-xl">
-                <h2 id="questionText" class="text-xl md:text-2xl font-bold text-white mb-6">Question goes here...</h2>
+            <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 md:p-8 backdrop-blur-md shadow-2xl space-y-6">
+                <h2 id="questionText" class="text-xl md:text-2xl font-bold text-white leading-relaxed">Question goes here...</h2>
                 <div id="optionsContainer" class="space-y-3">
                     <!-- Options injected dynamically -->
                 </div>
             </div>
 
             <!-- Navigation Bar -->
-            <div class="flex justify-between items-center pt-4">
-                <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-5 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-2">
+            <div class="flex justify-between items-center pt-2">
+                <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-5 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-2 font-medium">
                     <i class="fa-solid fa-arrow-left"></i> Previous
                 </button>
-                <button id="nextBtn" onclick="navigateQuestion(1)" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-500 transition-all flex items-center gap-2">
-                    Next <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <button id="finishBtn" onclick="finishQuiz()" class="hidden px-6 py-2.5 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-500 transition-all flex items-center gap-2">
-                    Submit Exam <i class="fa-solid fa-check"></i>
-                </button>
+                <div class="flex gap-3">
+                    <button id="nextBtn" onclick="navigateQuestion(1)" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-500 transition-all flex items-center gap-2">
+                        Next <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button id="finishBtn" onclick="finishQuiz()" class="hidden px-6 py-2.5 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition-all flex items-center gap-2 shadow-lg shadow-emerald-600/20">
+                        Submit Quiz <i class="fa-solid fa-circle-check"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- RESULTS / REVIEW SCREEN -->
         <div id="resultScreen" class="hidden fade-in space-y-8">
             <!-- Summary Dashboard Card -->
-            <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-8 text-center space-y-6 shadow-2xl relative overflow-hidden">
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-3xl p-8 text-center space-y-6 shadow-2xl relative overflow-hidden backdrop-blur-md">
                 <div class="relative z-10 space-y-2">
                     <h2 class="text-3xl font-extrabold text-white">Assessment Complete</h2>
-                    <p class="text-slate-400">Here is your performance diagnostic summary</p>
+                    <p id="resultSubtitle" class="text-slate-400">Diagnostic performance metrics for your exam session</p>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-                    <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/50">
                         <div id="scoreMetric" class="text-3xl font-black text-indigo-400">0%</div>
                         <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Overall Score</div>
                     </div>
-                    <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-                        <div id="correctMetric" class="text-3xl font-black text-emerald-400">0 / 0</div>
-                        <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Correct</div>
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/50">
+                        <div id="correctMetric" class="text-3xl font-black text-emerald-400">0 / 25</div>
+                        <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Correct Answers</div>
                     </div>
-                    <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/50">
                         <div id="timeMetric" class="text-3xl font-black text-amber-400">00:00</div>
-                        <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Time Spent</div>
+                        <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Time Elapsed</div>
                     </div>
-                    <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/50">
                         <div id="accuracyMetric" class="text-3xl font-black text-cyan-400">0%</div>
-                        <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Accuracy Rate</div>
+                        <div class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-semibold">Accuracy</div>
                     </div>
                 </div>
 
                 <div class="flex justify-center gap-4 pt-2">
-                    <button onclick="restartQuiz()" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-rotate-right"></i> Retake Test
+                    <button onclick="returnToHome()" class="px-6 py-3 rounded-xl border border-slate-700 text-slate-200 font-semibold hover:bg-slate-800 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-house"></i> Home Menu
                     </button>
-                    <button onclick="toggleReviewMode()" class="px-6 py-2.5 rounded-xl border border-slate-700 text-slate-200 font-semibold hover:bg-slate-800 transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-magnifying-glass"></i> Detailed Breakdown
+                    <button onclick="scrollToReview()" class="px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20">
+                        <i class="fa-solid fa-list-check"></i> View Detailed Solutions
                     </button>
                 </div>
             </div>
 
             <!-- Itemized Review Section -->
-            <div id="reviewSection" class="space-y-4">
-                <h3 class="text-xl font-bold text-slate-200 mb-4">Detailed Question Breakdown</h3>
+            <div id="reviewSection" class="space-y-4 pt-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-2xl font-bold text-slate-100">Detailed Answer Key & Explanations</h3>
+                    <span class="text-xs text-slate-400">Scroll down to inspect all choices</span>
+                </div>
                 <div id="reviewContainer" class="space-y-4"></div>
             </div>
         </div>
 
     </main>
 
-    <!-- Application Logic -->
+    <!-- Application Script -->
     <script>
-        const questionBank = [
-            { id: 1, topic: "heart", topicName: "Heart Histology", question: "What are the two main layers that constitute the double-walled pericardial sac enclosing the heart?", options: ["Endocardium and Epicardium", "Outer fibrous pericardium and inner serous pericardium", "Parietal pleura and visceral pleura", "Tunica intima and tunica media"], answer: 1, explanation: "The pericardium consists of an outer fibrous pericardium (anchoring) and an inner serous pericardium (parietal and visceral layers)[span_0](start_span)[span_0](end_span)." },
-            { id: 2, topic: "heart", topicName: "Heart Histology", question: "Which layer of the heart wall is the thickest and consists primarily of striated cardiac muscle tissue?", options: ["Endocardium", "Epicardium", "Myocardium", "Fibrous layer"], answer: 2, explanation: "The myocardium forms the thick middle muscle layer responsible for contraction[span_1](start_span)[span_1](end_span)." },
-            { id: 3, topic: "heart", topicName: "Heart Histology", question: "What structural role do intercalated discs play in cardiac muscle performance?", options: ["They store intracellular calcium exclusively.", "They provide structural anchoring (desmosomes) and electrical synchronization (gap junctions).", "They produce lubricating pericardial fluid.", "They trigger direct blood pressure regulation."], answer: 1, explanation: "Desmosomes anchor muscle cells together mechanically, while gap junctions allow rapid ionic electrical conduction[span_2](start_span)[span_2](end_span)." },
-            { id: 4, topic: "heart", topicName: "Heart Histology", question: "What tissue type lines the inner chamber walls of the heart (endocardium)?", options: ["Simple columnar epithelium", "Stratified squamous epithelium", "Simple squamous endothelium", "Pseudostratified ciliated epithelium"], answer: 2, explanation: "The endocardium consists of a continuous layer of simple squamous endothelial cells[span_3](start_span)[span_3](end_span)." },
-            { id: 5, topic: "heart", topicName: "Heart Histology", question: "Which vascular structures hold approximately 64% of total blood volume under normal conditions?", options: ["Arteries", "Arterioles", "Capillaries", "Veins"], answer: 3, explanation: "Veins are thin-walled capacitance vessels that store the bulk of systemic blood volume[span_4](start_span)[span_4](end_span)." },
-            { id: 6, topic: "heart", topicName: "Heart Histology", question: "What are the three fundamental tunic layers of a standard blood vessel wall?", options: ["Tunica intima, tunica media, and tunica adventitia/externa", "Endothelium, myocardium, epicardium", "Fibrous, serous, and parietal layers", "Subendocardium, Purkinje layer, and muscle layer"], answer: 0, explanation: "Blood vessels (excluding capillaries) feature an intima, media (smooth muscle), and externa/adventitia[span_5](start_span)[span_5](end_span)." },
-            { id: 7, topic: "time", topicName: "Time Management", question: "Which core characteristic of time dictates that it cannot be accumulated or saved for later use?", options: ["Finite & Non-renewable", "Continuously elastic", "Equally distributed", "Variable value"], answer: 0, explanation: "Time passes irreversibly; it cannot be stored, renewed, or bought[span_6](start_span)[span_6](end_span)." },
-            { id: 8, topic: "time", topicName: "Time Management", question: "Which time frame handles tasks required within minutes, hours, or during the current operational shift?", options: ["Short-Term Horizon", "Immediate Time Frame", "Medium-Term Horizon", "Long-Term Horizon"], answer: 1, explanation: "Immediate time focuses on current, active tasks due today or within hours[span_7](start_span)[span_7](end_span)." },
-            { id: 9, topic: "time", topicName: "Time Management", question: "A 12-week clinical placement roadmap falls under which planning frame?", options: ["Immediate Time Frame", "Short-Term Horizon", "Medium-Term Horizon", "Long-Term Horizon"], answer: 2, explanation: "Medium-term planning addresses goals spanning several weeks to months[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span)." },
-            { id: 10, topic: "time", topicName: "Time Management", question: "What psychological bias causes people to consistently underestimate task completion timelines?", options: ["The Planning Fallacy", "Procrastination cycle", "Chronotype bias", "Cognitive overload"], answer: 0, explanation: "The planning fallacy leads individuals to assume best-case execution scenarios[span_10](start_span)[span_10](end_span)." },
-            { id: 11, topic: "time", topicName: "Time Management", question: "What biological indicator determines an individual's peak circadian alertness window?", options: ["Biorhythm index", "Chronotype", "Metabolic rate", "Task-switching capacity"], answer: 1, explanation: "Chronotype classifies whether someone functions best in the early morning or late evening[span_11](start_span)[span_11](end_span)." },
-            { id: 12, topic: "time", topicName: "Time Management", question: "Rapidly switching between two complex mental activities is technically defined as:", options: ["Time blocking", "Batching", "Multitasking (Task-Switching)", "Delegation"], answer: 2, explanation: "True simultaneous processing for complex tasks is a myth; brain execution rapidly alternates at a cognitive cost[span_12](start_span)[span_12](end_span)." },
-            { id: 13, topic: "time", topicName: "Time Management", question: "Reserving fixed, uninterrupted calendar blocks for specific prioritized focus sessions is:", options: ["Time Blocking", "Pareto Scheduling", "Eisenhower Mapping", "ABC Method"], answer: 0, explanation: "Time blocking allocates dedicated, non-negotiable slots on calendars for targeted work[span_13](start_span)[span_13](end_span)." },
-            { id: 14, topic: "priorities", topicName: "Prioritization", question: "In the Eisenhower Matrix, important tasks that are NOT urgent belong to:", options: ["Quadrant I (Do First)", "Quadrant II (Schedule)", "Quadrant III (Delegate)", "Quadrant IV (Eliminate)"], answer: 1, explanation: "Quadrant II focuses on proactive, high-value tasks like strategy, exercise, and preparation[span_14](start_span)[span_14](end_span)[span_15](start_span)[span_15](end_span)." },
-            { id: 15, topic: "priorities", topicName: "Prioritization", question: "The Pareto Principle states that roughly:", options: ["80% of tasks should be delegated.", "20% of effort generates 80% of major outcomes.", "80% of time must be spent planning.", "20% of interruptions cause 80% of errors."], answer: 1, explanation: "The 80/20 rule indicates a vital minority of inputs drives the vast majority of results[span_16](start_span)[span_16](end_span)." },
-            { id: 16, topic: "priorities", topicName: "Prioritization", question: "Under Brian Tracy's ABCDE priority framework, 'A' items represent:", options: ["Optional nice-to-do tasks", "Delegable items", "Vital tasks with severe non-completion consequences", "Low-value activities"], answer: 2, explanation: "'A' tasks carry serious negative consequences if left uncompleted[span_17](start_span)[span_17](end_span)." },
-            { id: 17, topic: "priorities", topicName: "Prioritization", question: "Which dependency type requires Task A to complete before Task B can begin?", options: ["Finish-to-Start (FS)", "Start-to-Start (SS)", "Finish-to-Finish (FF)", "Start-to-Finish (SF)"], answer: 0, explanation: "Finish-to-Start is the standard sequential workflow dependency[span_18](start_span)[span_18](end_span)." },
-            { id: 18, topic: "priorities", topicName: "Prioritization", question: "Which metric evaluates overall success *after* an operation or term is finished?", options: ["Leading Indicator", "Lagging Indicator", "Process Metric", "Milestone Point"], answer: 1, explanation: "Lagging indicators measure final historical results (e.g., end-of-term exam grade)[span_19](start_span)[span_19](end_span)." },
-            { id: 19, topic: "priorities", topicName: "Prioritization", question: "Non-negotiable commitments 
+        // 100 QUESTION DATABASE (25 QUESTIONS PER TOPIC)
+        const allTopicsQuestions = {
+            heart: [
+                { id: 1, topicName: "Heart Histology", question: "What are the two primary layers composing the double-walled pericardial sac?", options: ["Endocardium and Visceral Layer", "Outer fibrous pericardium and inner serous pericardium", "Parietal pleura and visceral pleura", "Tunica intima and tunica media"], answer: 1, explanation: "The pericardium comprises an outer fibrous pericardium (anchoring sac) and an inner serous pericardium divided into parietal and visceral layers." },
+                { id: 2, topicName: "Heart Histology", question: "Which layer forms the thickest component of the heart wall and contains cardiac muscle fibers?", options: ["Endocardium", "Epicardium", "Myocardium", "Tunica Externa"], answer: 2, explanation: "The myocardium is the middle contractile muscular tissue layer of the heart wall." },
+                { id: 3, topicName: "Heart Histology", question: "What function do gap junctions within intercalated discs perform in cardiac muscle tissue?", options: ["They provide mechanical attachment for high stress.", "They allow rapid passage of action potentials for synchronized contraction.", "They synthesize pericardial fluid.", "They prevent over-stretching of blood vessels."], answer: 1, explanation: "Gap junctions form low-resistance electrical pathways enabling action potentials to spread rapidly across adjacent cardiac cells." },
+                { id: 4, topicName: "Heart Histology", question: "What epithelial cell type lines the internal surface of heart chambers (endocardium)?", options: ["Simple columnar epithelium", "Stratified squamous epithelium", "Simple squamous endothelium", "Pseudostratified epithelium"], answer: 2, explanation: "The endocardium consists of simple squamous endothelial cells continuous with vascular endothelium." },
+                { id: 5, topicName: "Heart Histology", question: "Which blood vessels serve as capacitance vessels, storing approximately 64% of blood volume?", options: ["Elastic Arteries", "Arterioles", "Capillaries", "Veins and Venules"], answer: 3, explanation: "Veins are thin-walled, distensible capacitance vessels containing the vast majority of systemic blood volume." },
+                { id: 6, topicName: "Heart Histology", question: "What are the three structural tunics of standard arteries and veins?", options: ["Tunica intima, tunica media, and tunica adventitia/externa", "Endothelium, myocardium, epicardium", "Fibrous, serous, visceral layers", "Subendocardium, Purkinje layer, muscle layer"], answer: 0, explanation: "Blood vessels feature three tunics: Intima (inner endothelium), Media (smooth muscle), and Adventitia/Externa (outer connective tissue)." },
+                { id: 7, topicName: "Heart Histology", question: "Which structural layer of the heart wall is identical to the visceral layer of serous pericardium?", options: ["Endocardium", "Myocardium", "Epicardium", "Subendocardium"], answer: 2, explanation: "The epicardium is the outermost layer of the heart wall and is histology identical to the visceral serous pericardium." },
+                { id: 8, topicName: "Heart Histology", question: "What is the primary function of desmosomes located within intercalated discs?", options: ["Ionic transmission", "Preventing cellular separation during contraction", "Hormone secretion", "Lipid storage"], answer: 1, explanation: "Desmosomes act as structural rivets, preventing cardiomyocytes from pulling apart during powerful mechanical contractions." },
+                { id: 9, topicName: "Heart Histology", question: "In which cardiac layer are Purkinje fibers (specialized electrical conduction cells) located?", options: ["Epicardium", "Subendocardial layer of endocardium", "Fibrous pericardium", "Tunica media"], answer: 1, explanation: "Purkinje fibers reside within the subendocardial connective tissue layer of the endocardium." },
+                { id: 10, topicName: "Heart Histology", question: "Which type of capillary features tiny filtration pores (fenestrations) covered by thin diaphragms?", options: ["Continuous Capillaries", "Fenestrated Capillaries", "Sinusoidal Capillaries", "Discontinuous Capillaries"], answer: 1, explanation: "Fenestrated capillaries contain pores allowing rapid exchange of small molecules (found in kidneys and endocrine glands)." },
+                { id: 11, topicName: "Heart Histology", question: "Which blood vessel layer contains smooth muscle cells responsible for vasoconstriction and vasodilation?", options: ["Tunica Intima", "Tunica Media", "Tunica Externa", "Internal Elastic Lamina"], answer: 1, explanation: "The tunica media is composed predominantly of circularly arranged smooth muscle fibers controlling lumen diameter." },
+                { id: 12, topicName: "Heart Histology", question: "What tiny blood vessel networks nourish the outer walls of large arteries and veins?", options: ["Vasa Vasorum", "Purkinje Fibers", "Intercalated Discs", "Fenestrations"], answer: 0, explanation: "Vasa vasorum ('vessels of the vessels') supply oxygenated blood to the thick outer walls of large vascular structures." },
+                { id: 13, topicName: "Heart Histology", question: "What structural feature in veins prevents the backflow of blood under low pressure?", options: ["Thick tunica media", "Internal elastic membranes", "Endothelial valves", "Purkinje cells"], answer: 2, explanation: "Venous valves formed by folds of tunica intima enforce one-way venous return toward the heart." },
+                { id: 14, topicName: "Heart Histology", question: "How do cardiac muscle cells differ histologically from skeletal muscle fibers?", options: ["Cardiac cells are non-striated and multinucleated.", "Cardiac cells are branched, single-nucleated, and joined by intercalated discs.", "Cardiac cells lack mitochondria entirely.", "Cardiac cells are under voluntary nervous control."], answer: 1, explanation: "Cardiomyocytes are branched cells with central nuclei, abundant mitochondria, and intercalated disc junctions." },
+                { id: 15, topicName: "Heart Histology", question: "What tissue forms the skeletal framework of heart valves?", options: ["Hyaline cartilage", "Dense fibrelastic connective tissue lined by endothelium", "Striated smooth muscle", "Adipose tissue"], answer: 1, explanation: "Heart valves consist of core dense collagenous/elastic connective tissue covered on both sides by smooth endothelium." },
+                { id: 16, topicName: "Heart Histology", question: "Which blood vessels have the thinnest walls, consisting solely of endothelium and a basal lamina?", options: ["Arterioles", "Venules", "Capillaries", "Muscular Arteries"], answer: 2, explanation: "Capillaries lack tunica media and externa, consisting only of single-layer endothelial walls optimized for diffusion." },
+                { id: 17, topicName: "Heart Histology", question: "What fluid is contained within the pericardial cavity to reduce friction during heartbeats?", options: ["Synovial Fluid", "Serous Pericardial Fluid", "Lymphatic Fluid", "Blood Plasma"], answer: 1, explanation: "A thin film of serous fluid secreted by serous pericardial membranes lubricates pericardial cavity surfaces." },
+                { id: 18, topicName: "Heart Histology", question: "Which major arteries are classified as elastic or conducting arteries due to abundant elastin in their tunica media?", options: ["Radial and Ulnar Arteries", "Aorta and Pulmonary Trunk", "Coronary Arteries", "Capillaries"], answer: 1, explanation: "Large conducting vessels like the Aorta contain heavy elastic lamellae to buffer high pressure surges from ventricle systole." },
+                { id: 19, topicName: "Heart Histology", question: "What is the primary function of arteriolar smooth muscle contraction (vasomotion)?", options: ["Pumping venous blood back to atrium", "Regulating systemic vascular resistance and local blood flow", "Filtering metabolic waste", "Storing glycogen"], answer: 1, explanation: "Arterioles are resistance vessels; their vascular tone determines systemic blood pressure and organ perfusion." },
+                { id: 20, topicName: "Heart Histology", question: "Sinusoidal (discontinuous) capillaries with large intercellular gaps are primarily found in which organs?", options: ["Brain and spinal cord", "Liver, bone marrow, and spleen", "Skeletal muscle", "Kidney glomeruli"], answer: 1, explanation: "Sinusoids feature large gaps permitting whole cells and proteins to pass across vessel walls (e.g., in bone marrow & liver)." },
+                { id: 21, topicName: "Heart Histology", question: "What specialized cells surround capillaries and help regulate microvascular flow and repair?", options: ["Pericytes", "Purkinje cells", "Fibroblasts", "Chondrocytes"], answer: 0, explanation: "Pericytes are contractile perivascular cells wrapped around capillaries that support vessel stability and blood flow." },
+                { id: 22, topicName: "Heart Histology", question: "Which sublayer of the tunica intima separates it from the tunica media in muscular arteries?", options: ["External Elastic Lamina", "Internal Elastic Lamina", "Visceral Pericardium", "Endocardium"], answer: 1, explanation: "The internal elastic lamina is a wavy elastic membrane demarcating the boundary between intima and media." },
+                { id: 23, topicName: "Heart Histology", question: "Why is the left ventricular myocardium significantly thicker than the right ventricular myocardium?", options: ["It contains more adipose tissue.", "It must generate higher pressure to pump blood through systemic circulation.", "It stores venous blood.", "It lacks intercalated discs."], answer: 1, explanation: "The left ventricle must pump blood throughout the entire body against high systemic vascular resistance." },
+                { id: 24, topicName: "Heart Histology", question: "What histological feature of cardiac muscle supplies continuous ATP to prevent fatigue?", options: ["High density of large mitochondria (up to 40% cell volume)", "Anaerobic glycolysis enzymes", "Abundant fat droplets without mitochondria", "Low capillary density"], answer: 0, explanation: "Cardiomyocytes are rich in mitochondria, relying on aerobic respiration to supply uninterrupted energy." },
+                { id: 25, topicName: "Heart Histology", question: "The sinoatrial (SA) node consists of modified cardiomyocytes that specialize in:", options: ["High-force contraction", "Spontaneous electrical impulse generation (pacemaker function)", "Hormone synthesis", "Fibrous scarring"], answer: 1, explanation: "SA node cells exhibit automaticity, generating intrinsic electrical impulses that regulate heart rate." }
+            ],
+            time: [
+                { id: 26, topicName: "Time Management", question: "Which characteristic of time emphasizes that unspent time cannot be stored or recovered?", options: ["Finite & Non-renewable", "Elastic and compressible", "Variable per person", "Subjective index"], answer: 0, explanation: "Time is strictly non-renewable; once an hour elapses, it is permanently gone and cannot be banked." },
+                { id: 27, topicName: "Time Management", question: "Which frame in the Four Time Frames model covers immediate shift duties due within hours?", options: ["Long-Term Horizon", "Immediate Time Frame", "Medium-Term Horizon", "Strategic Horizon"], answer: 1, explanation: "Immediate time focuses on current daily tasks requiring completion within minutes or hours." },
+                { id: 28, topicName: "Time Management", question: "Planning a 12-week educational curriculum or clinical rotation represents which time horizon?", options: ["Immediate Time", "Short-Term Horizon", "Medium-Term Horizon", "Long-Term Horizon"], answer: 2, explanation: "Medium-term horizons span multi-week to multi-month periods (typically 1 to 6 months)." },
+                { id: 29, topicName: "Time Management", question: "What cognitive phenomenon leads individuals to consistently underestimate project duration?", options: ["Planning Fallacy", "Chronotype bias", "Parkinson's Syndrome", "Focus Fatigue"], answer: 0, explanation: "The planning fallacy is a bias where people predict task completion under unrealistic optimal conditions." },
+                { id: 30, topicName: "Time Management", question: "What does an individual's 'chronotype' describe?", options: ["Their innate biological rhythm dictating peak alertness windows", "Their ability to multitask under stress", "Their typing speed", "Their scheduling methodology"], answer: 0, explanation: "Chronotype describes biological circadian preferences (e.g., morning larks vs. evening owls)." },
+                { id: 31, topicName: "Time Management", question: "What occurs cognitively when a person attempts to multitask complex cognitive projects?", options: ["True parallel mental processing", "Rapid task-switching incurring cognitive penalty costs", "30% speed improvement", "Elimination of errors"], answer: 1, explanation: "Multitasking complex tasks is rapid context switching, which incurs mental switching costs and increases error rates." },
+                { id: 32, topicName: "Time Management", question: "What scheduling practice allocates dedicated, uninterrupted time blocks on a calendar for specific work?", options: ["Time Blocking", "Pareto Delegation", "Eisenhower Filtering", "Continuous Multitasking"], answer: 0, explanation: "Time blocking secures protected time windows on a daily schedule to execute priority work." },
+                { id: 33, topicName: "Time Management", question: "According to Parkinson's Law:", options: ["Work expands to fill the time allotted for its completion.", "20% of work takes 80% of time.", "Tasks take twice as long as planned.", "Delegation increases workload."], answer: 0, explanation: "Parkinson's Law dictates that without artificial time limits, tasks will expand to consume whatever time is available." },
+                { id: 34, topicName: "Time Management", question: "Which time frame covers multi-year strategic milestones (e.g., 3-5 year career roadmaps)?", options: ["Immediate Horizon", "Short-Term Horizon", "Medium-Term Horizon", "Long-Term Horizon"], answer: 3, explanation: "Long-term horizons look years into the future to set multi-year goals and career trajectories." },
+                { id: 35, topicName: "Time Management", question: "What is 'context switching penalty' in workflow optimization?", options: ["The cognitive energy loss and time lag required to re-focus when changing tasks", "Financial cost of changing office software", "Physical fatigue from changing desks", "Delegation fees"], answer: 0, explanation: "Switching between disparate tasks fragments focus, requiring up to 15-20 minutes to regain deep cognitive flow." },
+                { id: 36, topicName: "Time Management", question: "Batching similar micro-tasks together (e.g., answering all emails at 4 PM) reduces:", options: ["Total daily throughput", "Cognitive context switching costs", "Work quality", "System safety"], answer: 1, explanation: "Task batching groups similar low-complexity tasks to minimize focus disruptions throughout the day." },
+                { id: 37, topicName: "Time Management", question: "What is a 'Time Audit'?", options: ["Tax review", "Tracking exact activity logs for a week to reveal actual time expenditure", "A disciplinary action", "Scheduling tool"], answer: 1, explanation: "A time audit tracks real time spent over several days to identify hidden inefficiencies and habits." },
+                { id: 38, topicName: "Time Management", question: "Which time frame spans 1 to 4 weeks (e.g., preparing for an upcoming midterm exam next week)?", options: ["Immediate Horizon", "Short-Term Horizon", "Medium-Term Horizon", "Strategic Horizon"], answer: 1, explanation: "Short-term planning focuses on immediate weekly horizons (1 to 4 weeks out)." },
+                { id: 39, topicName: "Time Management", question: "Why is time considered the ultimate equalizer in productivity management?", options: ["Everyone receives the exact same 24 hours per day regardless of status.", "Time can be purchased.", "Time accelerates with wealth.", "Everyone works at identical speeds."], answer: 0, explanation: "Time is strictly non-discriminatory; every human receives 1,440 minutes per 24-hour cycle." },
+                { id: 40, topicName: "Time Management", question: "Aligning demanding, analytical tasks with your biological peak energy hours is known as:", options: ["Chronotype alignment / Energy Management", "Parkinsonian scheduling", "Random allocation", "Passive delay"], answer: 0, explanation: "Matching high-cognitive tasks with natural peak alertness windows maximizes output and minimizes burnout." },
+                { id: 41, topicName: "Time Management", question: "What primary risk occurs when long-term time frame planning is neglected completely?", options: ["Excessive immediate rest", "Living in perpetual crisis management and firefighting", "Over-delegation", "Excessive long-term strategy"], answer: 1, explanation: "Without proactive long-term planning, non-urgent strategic goals become urgent crises later." },
+                { id: 42, topicName: "Time Management", question: "What is 'day-theming' in advanced calendar architecture?", options: ["Assigning specific broad operational focus areas to designated days of the week", "Changing background colors daily", "Working 24 hours straight", "Rotational shift duties"], answer: 0, explanation: "Day-theming assigns dedicated themes (e.g., Mondays = Research, Tuesdays = Writing) to reduce operational friction." },
+                { id: 43, topicName: "Time Management", question: "What is 'buffer time' when constructing daily schedules?", options: ["Unscheduled time cushions placed between major activities to absorb unexpected delays", "Break time reserved exclusively for lunch", "Overtime work", "Sleep duration"], answer: 0, explanation: "Buffer blocks prevent schedule cascade failure when unpredictable meetings or interruptions occur." },
+                { id: 44, topicName: "Time Management", question: "How does the 'Zeigarnik Effect' impact mental focus?", options: ["Unfinished tasks create intrusive thoughts that strain working memory.", "Finished tasks cause immediate memory loss.", "Taking breaks reduces memory.", "Writing lists causes stress."], answer: 0, explanation: "The Zeigarnik Effect shows that open loops and incomplete tasks linger in subconscious working memory." },
+                { id: 45, topicName: "Time Management", question: "What is the main goal of closing 'open loops' at the end of a workday?", options: ["Offloading working memory by capturing pending tasks in an external system", "Working late until everything is zero", "Deleting all emails", "Delegating all duties"], answer: 0, explanation: "Capturing open items into a trusted system frees cognitive bandwidth for rest outside work hours." },
+                { id: 46, topicName: "Time Management", question: "Which approach best combats the Planning Fallacy when estimating task deadlines?", options: ["Reference Class Forecasting (basing estimates on historical past data)", "Guessing double the time", "Assuming zero interruptions", "Asking a friend"], answer: 0, explanation: "Reference Class Forecasting relies on empirical historical completion times rather than optimistic speculation." },
+                { id: 47, topicName: "Time Management", question: "In time management theory, what distinguishes 'Urgent' from 'Important'?", options: ["Urgent demands immediate attention; Important contributes to long-term goals.", "Urgent is long-term; Important is short-term.", "They are identical concepts.", "Urgent tasks are always high-value."], answer: 0, explanation: "Urgency is time-bound sensitivity; Importance is value-bound alignment with fundamental objectives." },
+                { id: 48, topicName: "Time Management", question: "What is 'time poverty'?", options: ["Feeling perpetually overwhelmed by having too many obligations and insufficient time", "Financial poverty caused by tardiness", "Lack of alarm clocks", "Retirement planning"], answer: 0, explanation: "Time poverty is the chronic psychological sense of having insufficient time for meaningful pursuits." },
+                { id: 49, topicName: "Time Management", question: "How does 'time margin' improve resilience in operational scheduling?", options: ["By leaving deliberate open capacity to handle sudden unexpected events", "By scheduling every minute 100% full", "By extending work hours to 16 hours", "By eliminating breaks"], answer: 0, explanation: "Margin provides elasticity, allowing systems to absorb shocks without breaking planned schedules." },
+                { id: 50, topicName: "Time Management", question: "What primary benefit comes from reviewing long-term horizons on a weekly basis?", options: ["Ensuring daily actions stay aligned with overarching strategic priorities", "Memorizing schedules", "Increasing typing speed", "Avoiding rest"], answer: 0, explanation: "Weekly reviews bridge the gap between daily micro-tasks and multi-month strategic goals." }
+            ],
+            priorities: [
+                { id: 51, topicName: "Prioritization", question: "In the Eisenhower Matrix, important but NOT urgent tasks belong to which quadrant?", options: ["Quadrant I (Do First)", "Quadrant II (Schedule/Plan)", "Quadrant III (Delegate)", "Quadrant IV (Eliminate)"], answer: 1, explanation: "Quadrant II contains strategic, high-value proactive activities (e.g., exercise, planning, preparation) that prevent crises." },
+                { id: 52, topicName: "Prioritization", question: "The Pareto Principle states that approximately what ratio of results stems from vital inputs?", options: ["50% of results from 50% effort", "80% of results from 20% of effort", "100% of results from 100% effort", "10% of results from 90% effort"], answer: 1, explanation: "The 80/20 rule highlights that a minority of high-impact activities drive the vast majority of valuable outcomes." },
+                { id: 53, topicName: "Prioritization", question: "In Brian Tracy's ABCDE prioritization method, what do 'A' tasks represent?", options: ["Nice-to-do tasks with no consequences", "Tasks that should be delegated", "Critical tasks with serious negative consequences if undone ('Must Do')", "Low priority items"], answer: 2, explanation: "'A' tasks are essential priorities carrying heavy penalties if neglected." },
+                { id: 54, topicName: "Prioritization", question: "Which task dependency requires Task A to complete before Task B can start?", options: ["Finish-to-Start (FS)", "Start-to-Start (SS)", "Finish-to-Finish (FF)", "Start-to-Finish (SF)"], answer: 0, explanation: "Finish-to-Start is the standard dependency sequence where a preceding activity must wrap up first." },
+                { id: 55, topicName: "Prioritization", question: "What type of metric evaluates outcomes after an activity or academic term concludes?", options: ["Leading Indicator", "Lagging Indicator", "Real-time process metric", "Input metric"], answer: 1, explanation: "Lagging indicators measure retrospective end-results (e.g., final GPA or annual revenue)." },
+                { id: 56, topicName: "Prioritization", question: "What are 'Non-Negotiables' in personal and professional schedule management?", options: ["Optional leisure activities", "Minimum required standards/commitments that cannot be compromised", "Delegable items", "Tasks with no deadlines"], answer: 1, explanation: "Non-negotiables are foundational baseline obligations (e.g., patient safety, sleep, core duty hours)." },
+                { id: 57, topicName: "Prioritization", question: "In the Eisenhower Matrix, tasks that are Urgent but NOT Important belong in:", options: ["Quadrant I", "Quadrant II", "Quadrant III (Delegate / Minimize)", "Quadrant IV"], answer: 2, explanation: "Quadrant III consists of urgent interruptions and requests from others that lack alignment with your core goals." },
+                { id: 58, topicName: "Prioritization", question: "What strategy is recommended for handling Quadrant IV (Not Urgent & Not Important) activities?", options: ["Execute immediately", "Schedule for peak hours", "Eliminate or limit stringently", "Delegate to executives"], answer: 2, explanation: "Quadrant IV activities are time-wasting distractions that should be systematically eliminated." },
+                { id: 59, topicName: "Prioritization", question: "What characterizes a 'Leading Indicator' in performance tracking?", options: ["Measures past results", "Measures proactive input activities that predict future success", "Tracks financial losses", "Measures historical data"], answer: 1, explanation: "Leading indicators track predictive inputs (e.g., hours spent studying weekly predict final exam scores)." },
+                { id: 60, topicName: "Prioritization", question: "In the ABCDE method, 'B' items are defined as:", options: ["Tasks you 'Should Do' with mild consequences", "Critical must-do tasks", "Tasks to delegate", "Elimination targets"], answer: 0, explanation: "'B' items are important tasks with minor consequences if delayed, but subordinate to 'A' items." },
+                { id: 61, topicName: "Prioritization", question: "In the ABCDE method, 'C' items are defined as:", options: ["Tasks that are 'Nice to Do' with zero negative consequences if left undone", "Must-do crises", "Delegation targets", "Urgent disruptions"], answer: 0, explanation: "'C' items (e.g., coffee with a colleague) are pleasant but carry no operational penalty if omitted." },
+                { id: 62, topicName: "Prioritization", question: "In the ABCDE method, 'D' items stand for:", options: ["Do First", "Delegate to someone else", "Delay indefinitely", "Draft documents"], answer: 1, explanation: "'D' stands for Delegate—transferring tasks to free time for high-value 'A' activities." },
+                { id: 63, topicName: "Prioritization", question: "What is the primary danger of spending all your time operating in Eisenhower Quadrant I (Urgent & Important)?", options: ["Boredom", "Chronic burnout and continuous crisis management", "Lack of immediate action", "Under-sleeping"], answer: 1, explanation: "Living exclusively in Q1 leads to exhaustion, high stress, and reactive burnout." },
+                { id: 64, topicName: "Prioritization", question: "What key step must precede effective task delegation?", options: ["Setting vague deadlines", "Clear definition of required outcomes and authority boundaries", "Doing the work yourself first", "Ignoring progress"], answer: 1, explanation: "Effective delegation requires explicit expectations, defined success metrics, and proper authority allocation." },
+                { id: 65, topicName: "Prioritization", question: "What is 'Opportunity Cost' in decision-making?", options: ["The monetary price of software", "The loss of potential gain from other alternatives when one alternative is chosen", "Discount rates", "Time saved"], answer: 1, explanation: "Saying 'yes' to one low-priority task implicitly means saying 'no' to high-value alternatives." },
+                { id: 66, topicName: "Prioritization", question: "Which decision tool ranks projects using weighted criteria scores (e.g., Impact vs Effort)?", options: ["Weighted Decision Matrix", "Gantt Chart", "Pomodoro Timer", "Time Audit Log"], answer: 0, explanation: "A Weighted Decision Matrix evaluates competing choices objectively across standardized scored criteria." },
+                { id: 67, topicName: "Prioritization", question: "What project dependency occurs when two tasks can and must occur simultaneously (Start together)?", options: ["Finish-to-Start", "Start-to-Start (SS)", "Finish-to-Finish", "Lag time"], answer: 1, explanation: "Start-to-Start dependencies require both sub-tasks to initiate at the same time." },
+                { id: 68, topicName: "Prioritization", question: "What is 'MoSCoW' analysis used for in project scope management?", options: ["Categorizing requirements into Must have, Should have, Could have, and Won't have", "Global travel scheduling", "Budget auditing", "Time tracking"], answer: 0, explanation: "MoSCoW prioritizes deliverable features into Must, Should, Could, and Won't categories." },
+                { id: 69, topicName: "Prioritization", question: "Why is 'Quadrant II' called the quadrant of quality and leadership?", options: ["It focuses on proactive planning, prevention, and strategic growth before crises emerge.", "It requires no effort.", "It handles all emergencies.", "It eliminates all work."], answer: 0, explanation: "QII investment reduces QI crises by addressing root causes and strategic capacity proactively." },
+                { id: 70, topicName: "Prioritization", question: "What is 'Decision Fatigue'?", options: ["Deterioration of decision-making quality after a long session of making choices", "Physical fatigue from typing", "Inability to read charts", "Procrastination loop"], answer: 0, explanation: "Cognitive bandwidth degrades with consecutive choices, leading to impulsive or lazy decision-making." },
+                { id: 71, topicName: "Prioritization", question: "How does automated standard operating procedures (SOPs) assist prioritization?", options: ["They eliminate routine decision fatigue for repetitive low-value tasks.", "They double project costs.", "They delay execution.", "They prevent delegation."], answer: 0, explanation: "SOPs standardize routine tasks, saving executive focus for novel high-value priorities." },
+                { id: 72, topicName: "Prioritization", question: "What is the 'Eat That Frog' principle advocated by productivity experts?", options: ["Tackle your most difficult, highest-impact task first thing in the morning.", "Delay difficult tasks until late evening.", "Delegate your hardest work.", "Do easy tasks first to build momentum."], answer: 0, explanation: "'Eating the frog' means executing your largest, most challenging 'A' priority before distractions arise." },
+                { id: 73, topicName: "Prioritization", question: "When applying the 80/20 rule to study preparation, a student should focus first on:", options: ["Core foundational concepts and high-yield topics comprising 80% of exam content", "Formatting notes", "Reading every footnote sequentially", "Memorizing textbook page numbers"], answer: 0, explanation: "Identifying high-yield core principles maximizes academic score potential with efficient study effort." },
+                { id: 74, topicName: "Prioritization", question: "What is 'forced prioritization'?", options: ["Constraining choices to a strict rank order (1, 2, 3...) with no tied rankings allowed", "Mandatory work hours", "Delegating under duress", "Random selection"], answer: 0, explanation: "Forced ranking prevents the common trap where everything is falsely designated as 'Top Priority'." },
+                { id: 75, topicName: "Prioritization", question: "In executive leadership, what is the 'Tyranny of the Urgent'?", options: ["The tendency to let immediate, noisy micro-tasks crowd out critical strategic goals", "Strict boss behavior", "Oversleeping", "Budget cuts"], answer: 0, explanation: "The Tyranny of the Urgent describes how pressuring low-value urgent requests hijack focus from vital long-term priorities." }
+            ],
+            psychology: [
+                { id: 76, topicName: "Psychology & Interruptions", question: "Procrastination is fundamentally recognized by psychologists as a failure of:", options: ["Cognitive intelligence", "Emotion and self-regulation", "Timepiece calibration", "Physical energy"], answer: 1, explanation: "Procrastination is an emotional avoidance response to negative feelings (boredom, anxiety, self-doubt) linked to a task." },
+                { id: 77, topicName: "Psychology & Interruptions", question: "What planning format utilizes explicit 'If-Then' statements to initiate action automatically?", options: ["Implementation Intentions", "Pomodoro cycles", "Retrospective audits", "Mind mapping"], answer: 0, explanation: "Implementation Intentions ('If situation X occurs, Then I will perform Y') pre-program behavior cues." },
+                { id: 78, topicName: "Psychology & Interruptions", question: "In Cognitive Load Theory, mental effort inherent to the complexity of the material itself is:", options: ["Extraneous Load", "Germane Load", "Intrinsic Load", "Peripheral Load"], answer: 2, explanation: "Intrinsic load reflects the inherent baseline difficulty of the topic being learned." },
+                { id: 79, topicName: "Psychology & Interruptions", question: "What four-step process guides immediate handling of unexpected workplace distractions?", options: ["Stop, Assess, Decide, Respond", "Ignore, Delay, Delete, Forget", "Run, Hide, Fight, Report", "Pause, Plan, Proceed, Panic"], answer: 0, explanation: "Stop-Assess-Decide-Respond prevents reactive emotional disruption when unexpected events interrupt workflow." },
+                { id: 80, topicName: "Psychology & Interruptions", question: "The standard Pomodoro Technique consists of what interval structure?", options: ["25 minutes focus, 5 minutes rest", "50 minutes focus, 10 minutes rest", "15 minutes focus, 15 minutes rest", "60 minutes focus, 30 minutes rest"], answer: 0, explanation: "The Pomodoro model pairs 25-minute sprint intervals of deep focus with 5-minute restorative breaks." },
+                { id: 81, topicName: "Psychology & Interruptions", question: "Which of the following represents an insidious, internal 'hidden' time waster?", options: ["Fire alarm evacuation", "Perfectionism and cognitive task switching", "Scheduled power outage", "Staff meeting"], answer: 1, explanation: "Internal hidden time wasters like perfectionism, anxiety, and constant context switching drain productivity silently." },
+                { id: 82, topicName: "Psychology & Interruptions", question: "In Cognitive Load Theory, unnecessary mental strain caused by poor instructional design or noise is:", options: ["Intrinsic Load", "Extraneous Load", "Germane Load", "Baseline Load"], answer: 1, explanation: "Extraneous load is wasted mental effort imposed by confusing layouts, noise, or poorly structured materials." },
+                { id: 83, topicName: "Psychology & Interruptions", question: "What is 'Germane Load' in learning psychology?", options: ["Mental effort dedicated to constructing long-term schemas and deep understanding", "Wasted distraction energy", "Baseline task difficulty", "Physical fatigue"], answer: 0, explanation: "Germane load is productive cognitive effort used to integrate new information into existing mental frameworks." },
+                { id: 84, topicName: "Psychology & Interruptions", question: "What is the '5-Minute Rule' cognitive trick for defeating task initiation procrastination?", options: ["Commit to working on a dreaded task for just 5 minutes; if you want to stop then, you can.", "Take a 5-minute break every hour.", "Finish all tasks in 5 minutes.", "Delay work by 5 minutes."], answer: 0, explanation: "Lowering the initiation barrier to 5 minutes bypasses emotional resistance; momentum usually carries the worker forward." },
+                { id: 85, topicName: "Psychology & Interruptions", question: "How does perfectionism directly fuel procrastination?", options: ["Unrealistic high standards trigger fear of failure, causing complete avoidance of initiation.", "Perfectionists work too fast.", "Perfectionists delegate too much.", "It improves emotional regulation."], answer: 0, explanation: "The fear of producing imperfect work creates acute anxiety, driving emotional procrastination." },
+                { id: 86, topicName: "Psychology & Interruptions", question: "What is 'Structured Procrastination'?", options: ["Using the urge to avoid a top-tier task to accomplish secondary useful tasks", "Creating calendars for delay", "Canceling all appointments", "Sleeping during work hours"], answer: 0, explanation: "Structured procrastination leverages avoidance of 'Task A' to productively execute 'Task B' and 'Task C'." },
+                { id: 87, topicName: "Psychology & Interruptions", question: "What primary cognitive mechanism explains why push notifications disrupt deep work?", options: ["They trigger dopamine-seeking novelty loops and context switching penalties.", "They clear working memory.", "They lower heart rate.", "They improve long-term memory."], answer: 0, explanation: "Digital alerts trigger novelty seeking, pulling attention away and incurring cognitive switching costs." },
+                { id: 88, topicName: "Psychology & Interruptions", question: "What is 'Hyperfocus' in cognitive performance?", options: ["An intense state of deep absorption where awareness of time and surroundings fades", "Multitasking 5 items", "Panic during exams", "Fast reading"], answer: 0, explanation: "Hyperfocus is deep immersive concentration on a single task, maximizing cognitive output." },
+                { id: 89, topicName: "Psychology & Interruptions", question: "How does environmental noise impact working memory during complex study sessions?", options: ["It increases extraneous cognitive load, diminishing retention capacity.", "It increases intrinsic load.", "It eliminates errors.", "It builds schemas faster."], answer: 0, explanation: "Auditory distractions force the brain to process background signals, consuming limited working memory slots." },
+                { id: 90, topicName: "Psychology & Interruptions", question: "What is 'Present Bias' in behavioral economics?", options: ["The tendency to overvalue immediate rewards over larger future benefits", "Focusing only on current historical events", "Being punctual", "Memory retention of past events"], answer: 0, explanation: "Present bias makes immediate relaxation feel more appealing than future long-term success." },
+                { id: 91, topicName: "Psychology & Interruptions", question: "What strategy effectively minimizes digital interruptions during deep study blocks?", options: ["Enabling Airplane mode / Do Not Disturb and placing devices out of sight", "Checking messages every 5 minutes", "Leaving notifications loud", "Minimizing windows"], answer: 0, explanation: "Removing temptation and alerts physically eliminates external triggers for context switching." },
+                { id: 92, topicName: "Psychology & Interruptions", question: "What psychological phenomenon occurs when fear of missing out (FOMO) dictates work habits?", options: ["Compulsive checking of communication channels, fragmenting focus", "Improved prioritization", "Higher test scores", "Reduced stress"], answer: 0, explanation: "FOMO drives continuous checking behaviors, breaking deep concentration cycles." },
+                { id: 93, topicName: "Psychology & Interruptions", question: "How does self-compassion impact recovery from a procrastination episode?", options: ["It reduces guilt and shame, making it easier to re-engage with work quickly.", "It encourages laziness.", "It increases self-doubt.", "It guarantees failure."], answer: 0, explanation: "Forgiving oneself for procrastinating lowers negative emotional stress, breaking the guilt-avoidance cycle." },
+                { id: 94, topicName: "Psychology & Interruptions", question: "What is a 'Commitment Device' in behavioral psychology?", options: ["A choice made in the present that locks in future desirable actions (e.g., website blockers)", "A signed contract with an employer", "A smartphone app", "An alarm clock"], answer: 0, explanation: "Commitment devices voluntarily restrict future options to prevent impulsive procrastination." },
+                { id: 95, topicName: "Psychology & Interruptions", question: "What role does dopamine play in digital distraction loops?", options: ["It provides anticipation rewards when checking for notifications, reinforcing habit loops.", "It induces immediate sleep.", "It enhances long-term memory.", "It decreases heart rate."], answer: 0, explanation: "Dopamine drives the craving for unpredictable rewards (variable rewards) found in social media and alerts." },
+                { id: 96, topicName: "Psychology & Interruptions", question: "What is 'Ego Depletion' theory?", options: ["The idea that self-control and willpower draw from a finite pool of mental energy", "Excessive arrogance", "Memory loss after studying", "Physical exhaustion"], answer: 0, explanation: "Ego depletion suggests willpower wears down with continuous decision-making and temptation resistance." },
+                { id: 97, topicName: "Psychology & Interruptions", question: "How does micro-task chunking (breaking a project into tiny steps) combat procrastination?", options: ["It reduces perceived task difficulty and intrinsic overwhelm, lowering emotional friction.", "It doubles total project length.", "It removes deadlines.", "It eliminates the need to study."], answer: 0, explanation: "Small, manageable steps prevent brain overwhelm and reduce initiation anxiety." },
+                { id: 98, topicName: "Psychology & Interruptions", question: "What is 'Cognitive Reframing' when facing an intimidating assignment?", options: ["Shifting perspective from viewing a task as a threat to viewing it as a growth challenge", "Rewriting the assignment prompt", "Delegating the task", "Ignoring requirements"], answer: 0, explanation: "Reframing alters emotional appraisal, converting anxiety into productive focus." },
+                { id: 99, topicName: "Psychology & Interruptions", question: "Why do open office environments often lead to high cognitive fatigue?", options: ["Unpredictable visual and auditory disruptions continuously trigger startle and orientation reflexes.", "Excessive lighting", "Too much desk space", "Lack of chairs"], answer: 0, explanation: "Frequent ambient movement and speech constantly force the brain to re-orient, building extraneous load." },
+                { id: 100, topicName: "Psychology & Interruptions", question: "What is the primary function of a 'Distraction Pad' kept during study sessions?", options: ["Jotting down intrusive non-urgent thoughts immediately to offload working memory without stopping work", "Drawing pictures", "Calculating exam grades", "Taking lecture notes"], answer: 0, explanation: "Capturing random intrusive thoughts on a side pad clears working memory so deep work can continue uninterrupted." }
+            ]
+        };
+
+        // Application State
+        let activeQuestions = [];
+        let currentIndex = 0;
+        let userAnswers = {};
+        let timerInterval = null;
+        let secondsElapsed = 0;
+        let currentModeTitle = "";
+
+        // Helper: Shuffle Array (Fisher-Yates)
+        function shuffle(array) {
+            let m = array.length, t, i;
+            while (m) {
+                i = Math.floor(Math.random() * m--);
+                t = array[m];
+                array[m] = array[i];
+                array[i] = t;
+            }
+            return array;
+        }
+
+        function startQuiz(mode) {
+            userAnswers = {};
+            currentIndex = 0;
+            secondsElapsed = 0;
+
+            if (mode === 'combined') {
+                currentModeTitle = "25-Question Combined Assessment";
+                // Pick 5-7 random questions from each topic = 25 total
+                let selected = [];
+                selected.push(...shuffle([...allTopicsQuestions.heart]).slice(0, 6));
+                selected.push(...shuffle([...allTopicsQuestions.time]).slice(0, 6));
+                selected.push(...shuffle([...allTopicsQuestions.priorities]).slice(0, 6));
+                selected.push(...shuffle([...allTopicsQuestions.psychology]).slice(0, 7));
+                activeQuestions = shuffle(selected);
+            } else {
+                const names = {
+                    heart: "Heart Histology (25 Questions)",
+                    time: "Time Management (25 Questions)",
+                    priorities: "Priorities & Decision-Making (25 Questions)",
+                    psychology: "Psychology & Procrastination (25 Questions)"
+                };
+                currentModeTitle = names[mode];
+                activeQuestions = [...allTopicsQuestions[mode]];
+            }
+
+            document.getElementById('setupScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            document.getElementById('quizHeaderInfo').classList.remove('hidden');
+            document.getElementById('quizHeaderInfo').classList.add('flex');
+
+            startTimer();
+            renderQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+                const secs = String(secondsElapsed % 60).padStart(2, '0');
+                document.getElementById('timerDisplay').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestion() {
+            const q = activeQuestions[currentIndex];
+            
+            // Progress Bar
+            const progress = ((currentIndex + 1) / activeQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            document.getElementById('questionCategoryTag').innerText = q.topicName;
+            document.getElementById('questionCounter').innerText = `Question ${currentIndex + 1} of ${activeQuestions.length}`;
+            document.getElementById('questionText').innerText = q.question;
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const isSelected = userAnswers[currentIndex] === idx;
+                const optBtn = document.createElement('button');
+                optBtn.type = "button";
+                optBtn.className = `w-full text-left p-4 rounded-xl border transition-all flex items-start justify-between ${
+                    isSelected 
+                        ? 'border-indigo-500 bg-indigo-500/10 text-white font-medium shadow-md shadow-indigo-500/10' 
+                        : 'border-slate-700/70 bg-slate-800/40 text-slate-300 hover:bg-slate-800 hover:border-slate-600'
+                }`;
+                optBtn.onclick = () => selectOption(idx);
+                optBtn.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="w-7 h-7 rounded-lg border text-xs flex items-center justify-center shrink-0 mt-0.5 ${
+                            isSelected ? 'border-indigo-500 bg-indigo-500 text-white font-bold' : 'border-slate-600 text-slate-400'
+                        }">${String.fromCharCode(65 + idx)}</span>
+                        <span class="text-sm md:text-base leading-relaxed">${opt}</span>
+                    </div>
+                    ${isSelected ? '<i class="fa-solid fa-circle-check text-indigo-400 text-lg shrink-0 ml-2 mt-1"></i>' : ''}
+                `;
+                container.appendChild(optBtn);
+            });
+
+            // Navigation State
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            
+            if (currentIndex === activeQuestions.length - 1) {
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('finishBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('finishBtn').classList.add('hidden');
+            }
+        }
+
+        function selectOption(index) {
+            userAnswers[currentIndex] = index;
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            currentIndex += direction;
+            renderQuestion();
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            let score = 0;
+            activeQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.answer) score++;
+            });
+
+            const percentage = Math.round((score / activeQuestions.length) * 100);
+            const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+            const secs = String(secondsElapsed % 60).padStart(2, '0');
+
+            document.getElementById('resultSubtitle').innerText = `${currentModeTitle} - Final Diagnostic`;
+            document.getElementById('scoreMetric').innerText = `${percentage}%`;
+            document.getElementById('correctMetric').innerText = `${score} / ${activeQuestions.length}`;
+            document.getElementById('timeMetric').innerText = `${mins}:${secs}`;
+            document.getElementById('accuracyMetric').innerText = `${percentage}%`;
+
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('quizHeaderInfo').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+
+            renderReview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderReview() {
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = '';
+
+            activeQuestions.forEach((q, idx) => {
+                const userChoice = userAnswers[idx];
+                const isCorrect = userChoice === q.answer;
+
+                const card = document.createElement('div');
+                card.className = `p-6 rounded-2xl border ${
+                    isCorrect ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-rose-500/30 bg-rose-500/5'
+                } space-y-4`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="space-y-1">
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">${q.topicName}</span>
+                            <h4 class="font-bold text-slate-100 text-base md:text-lg">${idx + 1}. ${q.question}</h4>
+                        </div>
+                        <span class="px-3 py-1 text-xs rounded-full font-bold shrink-0 ${
+                            isCorrect ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                        }">
+                            ${isCorrect ? '<i class="fa-solid fa-check mr-1"></i> Correct' : '<i class="fa-solid fa-xmark mr-1"></i> Incorrect'}
+                        </span>
+                    </div>
+
+                    <div class="text-sm space-y-2 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <div class="text-slate-300"><b>Your Answer:</b> 
+                            <span class="${isCorrect ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}">
+                                ${userChoice !== undefined ? `${String.fromCharCode(65 + userChoice)}. ${q.options[userChoice]}` : 'Unanswered'}
+                            </span>
+                        </div>
+                        ${!isCorrect ? `<div class="text-slate-300"><b>Correct Solution:</b> <span class="text-emerald-400 font-semibold">${String.fromCharCode(65 + q.answer)}. ${q.options[q.answer]}</span></div>` : ''}
+                    </div>
+
+                    <div class="text-xs md:text-sm text-slate-400 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80 leading-relaxed">
+                        <span class="font-bold text-indigo-400">Detailed Rationale:</span> ${q.explanation}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function scrollToReview() {
+            document.getElementById('reviewSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function returnToHome() {
+            clearInterval(timerInterval);
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('quizHeaderInfo').classList.add('hidden');
+            document.getElementById('setupScreen').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function confirmExit() {
+            if (confirm("Are you sure you want to exit? Your current test progress will be reset.")) {
+                returnToHome();
+            }
+        }
+    </script>
+</body>
+</html>
